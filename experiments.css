@@ -1,0 +1,86 @@
+/* Detailed, responsive workbench panels. */
+.skip-link:not(:focus){clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap;padding:0}
+.hero h1{font-size:clamp(56px,6.55vw,98px)}
+.hero .heading-mark{font-size:80px}
+.instrument-top h2{max-width:21ch}
+.experiments{grid-template-columns:1fr;gap:32px}
+.experiment{padding:32px}
+.experiment h3{font-size:36px;max-width:none;margin:24px 0 14px}
+.experiment .experiment-lede{font-size:15px;max-width:78ch;margin-bottom:32px;line-height:1.8}
+.bio-layout,.bio-inference,.sort-layout{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(0,1fr);gap:30px}
+.bio-layout>*,.bio-inference>*,.sort-layout>*{min-width:0}
+.stage-heading{display:flex;gap:12px;align-items:flex-start;margin-bottom:18px}
+.stage-number{background:var(--ink);color:var(--paper);display:grid;place-items:center;width:28px;height:28px;flex-shrink:0;font:11px monospace}
+.stage-heading h4{margin:0 0 4px;font-size:17px;line-height:1.3;letter-spacing:-.02em}
+.stage-heading div>span{font-size:11px;color:var(--muted);line-height:1.6;display:block}
+.bio-presets{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.bio-presets button{font:10px monospace;padding:8px 12px;border-color:var(--line);background:transparent}
+.bio-presets button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+#biosignal{height:auto;min-height:170px;margin:12px 0;display:block;width:100%;user-select:none}
+#bio-window{cursor:grab;touch-action:none}
+#bio-window:active{cursor:grabbing}
+.bio-legend,.sort-legend{display:flex;gap:16px;font:10px/1.6 monospace;flex-wrap:wrap;color:var(--muted);margin:10px 0 20px}
+.legend-dot{display:inline-block;width:6px;height:6px;background:var(--accent);border-radius:50%;vertical-align:middle}
+.feature-vector{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+.feature-tile{background:var(--panel);padding:14px}
+.feature-tile>span{display:block;font:10px/1.5 monospace;color:var(--muted);margin-bottom:6px}
+.feature-tile output{font:24px/1.4 monospace;display:block;font-variant-numeric:tabular-nums}
+.pipeline-connector{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:17px 0;margin:27px 0;color:var(--accent);text-align:center;font-size:10px;line-height:2}
+.forest-trees{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+.tree-card{border:1px solid var(--line);background:var(--panel);align-self:start;min-width:0}
+.tree-card summary{display:block;text-align:center;padding:12px 5px;list-style:none}
+.tree-card summary::-webkit-details-marker{display:none}
+.tree-card summary>span{font:9px monospace;display:block}
+.tree-card svg{display:block;width:100%;height:auto;max-height:83px;margin:12px auto}
+.tree-card summary strong{font-size:11px;display:block}
+.tree-card small{font:8px/1.5 monospace;display:block;color:var(--muted);margin-top:5px}
+.tree-card ol{padding:0 9px 0 23px;font:10px/1.6 monospace;overflow-wrap:anywhere}
+.tree-card li{margin-bottom:9px}
+.tree-card>p{padding:0 9px;font:9px/1.7 monospace;overflow-wrap:anywhere}
+.prediction-label{border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:14px}
+.prediction-label .eyebrow{color:var(--muted);font-size:9px}
+.prediction-label output{display:block;font-size:29px;letter-spacing:-.04em;color:var(--accent);font-weight:600}
+.prediction-scores{display:grid;gap:9px}
+.score-row{display:grid;grid-template-columns:60px 1fr 42px;gap:8px;align-items:center;font:10px monospace}
+.score-track{height:6px;display:block;background:var(--line)}
+.score-track i{display:block;height:100%;background:var(--accent)}
+.score-row output{text-align:right}
+.bio-explanation{display:grid;grid-template-columns:1fr 1fr;gap:30px;border-top:1px solid var(--line);margin-top:27px;padding-top:10px}
+.bio-explanation summary{font-size:13px;font-weight:600}
+.bio-explanation a{font-size:12px}
+.nn-flow{display:flex;gap:10px;align-items:center;font:11px/1.6 monospace;margin:20px 0}
+.nn-flow small{font-size:9px;color:var(--muted)}
+.neuron-icon{color:var(--accent);line-height:1.8;text-align:center;min-width:60px}
+.table-scroll{overflow-x:auto;max-width:100%;max-height:300px;scrollbar-width:thin}
+.table-scroll table{width:100%;border-collapse:collapse;text-align:left;font:11px/1.6 monospace}
+.table-scroll th{font-weight:600;background:var(--panel);position:sticky;top:0}
+.table-scroll th,.table-scroll td{padding:10px 12px;border-bottom:1px solid var(--line)}
+.sample-details{margin-top:12px;border-top:1px solid var(--line)}
+.sample-details summary{font-size:11px}
+.sort-selectors{display:grid;grid-template-columns:1.4fr 1fr;gap:15px}
+.sort-selectors label{font-size:11px}
+.sort-selectors select{display:block;width:100%;margin-top:7px;min-height:46px;padding:9px 12px;border:1px solid var(--line);border-radius:0;background:var(--paper);color:var(--ink);font:12px Arial,sans-serif}
+.sort-bars{height:200px;margin-top:20px}
+.sort-bars span{max-height:150px}
+.sort-legend span:first-child{color:var(--accent)}
+.sort-speed{display:flex;align-items:center;gap:20px;font-size:11px;max-width:360px;margin:14px 0}
+.sort-speed input{flex:1;width:120px}
+.sort-counters{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:15px 0;gap:10px;margin-top:16px}
+.sort-counters span{display:block;font:9px monospace;color:var(--muted)}
+.sort-counters output{display:block;font:26px/1.5 monospace}
+.step-explanation{min-height:3.4em;margin-top:5px!important}
+.complexity-panel{background:var(--panel);border:1px solid var(--line);padding:22px;align-self:start}
+.complexity-panel>.eyebrow{font-size:9px;color:var(--muted)}
+.complexity-panel h4{font-size:24px;line-height:1.2;margin:12px 0 20px;letter-spacing:-.03em}
+#sort-complexity{margin:0}
+#sort-complexity>div{border-top:1px solid var(--line);padding:12px 0}
+#sort-complexity dt{font-size:10px;color:var(--muted)}
+#sort-complexity dd{font:21px/1.4 monospace;margin:4px 0 0;overflow-wrap:anywhere}
+.complexity-comparison{border-top:1px solid var(--line);margin-top:28px;padding-top:12px}
+.complexity-comparison summary{font-weight:600;font-size:13px}
+.complexity-comparison table{min-width:740px}
+.complexity-comparison tr.selected td{background:var(--panel)}
+.contact-section h2{max-width:17ch}
+@media(max-width:1000px){.forest-trees{grid-template-columns:repeat(3,minmax(0,1fr))}.bio-layout,.bio-inference,.sort-layout{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:22px}.experiment{padding:25px}.hero .heading-mark{display:none}}
+@media(max-width:760px){.bio-layout,.bio-inference,.sort-layout,.bio-explanation{grid-template-columns:1fr}.experiment h3{font-size:30px}.feature-vector{grid-template-columns:repeat(3,1fr)}.bio-features{margin-top:8px}.forest-trees{grid-template-columns:repeat(5,minmax(0,1fr))}.tree-card svg{max-height:60px}.sort-layout{gap:25px}.complexity-panel{padding:20px}.bio-inference{gap:25px}.bio-explanation{gap:8px}.experiment .experiment-lede{font-size:14px}.hero h1{font-size:clamp(45px,7.8vw,70px)}}
+@media(max-width:540px){.experiment{padding:18px}.experiment-heading{align-items:flex-start;gap:14px}.experiment-heading .eyebrow{font-size:8px;max-width:150px}.experiment-heading .tag{font-size:7px;max-width:120px;text-align:right}.experiment h3{font-size:29px}.feature-vector{grid-template-columns:1fr 1fr}.feature-tile{padding:12px}.stage-heading h4{font-size:16px}.stage-heading div>span{font-size:11px}.forest-trees{grid-template-columns:repeat(2,minmax(0,1fr))}.tree-card summary{padding:12px}.tree-card summary strong{font-size:13px}.tree-card small{font-size:10px}.tree-card svg{max-height:75px}.tree-card ol{font-size:11px}.tree-card>p{font-size:10px}.bio-legend{gap:10px;font-size:9px}.bio-presets{gap:5px}.bio-presets button{padding:8px 9px;font-size:10px}.sort-selectors{grid-template-columns:1fr;gap:13px}.sort-selectors select{font-size:14px}.sort-bars{gap:5px}.sort-counters span{font-size:8px}.sort-counters output{font-size:24px}.bio-explanation summary,.complexity-comparison summary{line-height:1.8}.table-scroll th,.table-scroll td{padding:8px}.pipeline-connector{font-size:9px}.hero h1{font-size:clamp(32px,8.45vw,46px)}.hero .heading-mark{display:none}.instrument-top h2{font-size:21px}.instrument-badge{margin-left:10px}.nn-flow{font-size:10px;gap:7px}.nn-flow .neuron-icon{min-width:44px}.contact-section h2{font-size:clamp(35px,9.4vw,46px)}}

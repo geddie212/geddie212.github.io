@@ -1,0 +1,13 @@
+{
+  "name": "paul-gedrimas-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Paul Gedrimas — wearable systems and research tooling",
+  "scripts": {
+    "dev": "node scripts/serve.cjs",
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  }
+}

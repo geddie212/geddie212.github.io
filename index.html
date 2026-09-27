@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ebe8de">
+  <title>Paul Gedrimas — Wearable Systems & Research Tooling</title>
+  <meta name="description" content="Paul Gedrimas is a Computer Science student at USF building wearable research tools, data pipelines, and applied AI systems.">
+  <meta property="og:title" content="Paul Gedrimas — Wearable Systems & Research Tooling">
+  <meta property="og:description" content="I capture human biosignals. Tools for studying behaviours and states, lab research infrastructure, and AI.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://geddie212.github.io/">
+  <meta property="og:url" content="https://geddie212.github.io/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experiments.css">
+  <script src="loss-math.js" defer></script>
+  <script src="gradient.js" defer></script>
+  <script src="sculpture.js" defer></script>
+  <script src="bio-model.js" defer></script>
+  <script src="sort-model.js" defer></script>
+  <script src="site.js" defer></script>
+  <script src="experiments.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="site-shell">
+<header class="site-nav">
+  <a class="wordmark" href="#" aria-label="Paul Gedrimas home">pg<span class="brand-dot">.</span><span class="wordmark-caption">PAUL GEDRIMAS<br>PERSONAL INDEX / 01</span></a>
+  <nav aria-label="Main navigation"><a href="#work">Work <span>01</span></a><a href="#lab">Lab <span>02</span></a><a href="#about">About <span>03</span></a><a href="#contact">Contact ↗</a></nav>
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark mode">Dark mode</button>
+</header>
+<main id="main">
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="hero-kicker"><span class="eyebrow"><i class="status-dot"></i> OPEN TO INTERNSHIPS & RESEARCH</span><span class="eyebrow">SAN FRANCISCO, CA / USF ’28</span></div>
+  <h1 id="hero-heading">I capture<br><span class="muted-heading">human biosignals.</span><span class="heading-mark" aria-hidden="true">↘</span></h1>
+  <div class="hero-body">
+    <div class="identity">
+      <div class="portrait-row"><figure class="portrait"><img src="assets/paul-github.jpg" width="418" height="418" alt="Paul Gedrimas" fetchpriority="high"><span class="portrait-cross" aria-hidden="true">+</span></figure><div class="portrait-caption"><span class="eyebrow">THE PERSON<br>BEHIND THE CODE</span><span class="vertical-rule"></span><span class="handwritten">Hello, I’m Paul.</span></div></div>
+      <h2>Paul Gedrimas<span class="small-dot">●</span></h2>
+      <p class="intro-copy">Computer Science student building tools to <strong>capture human biosignals and predict behaviours and states.</strong></p>
+      <p class="intro-detail">I build software infrastructure for lab-based testing and explore how AI systems work—investigating their components, finding opportunities to optimise them, and understanding their limitations.</p>
+      <div class="hero-links"><a class="button primary" href="#work">Explore my work <span>↘</span></a><a class="text-link" href="resume.html">View résumé ↗</a></div>
+      <div class="identity-footer eyebrow"><span>PYTHON / JAVA / C / JAVASCRIPT</span><span>EN + LT</span></div>
+    </div>
+    <section class="instrument" aria-label="Interactive gradient descent instrument">
+      <div class="instrument-top"><div><span class="eyebrow">INTERACTIVE STUDY — 001</span><h2>Reduce the loss function.</h2></div><div class="instrument-badge" aria-hidden="true"><span></span><span></span><span></span></div></div>
+      <div class="plot-screen">
+        <canvas id="sculpture" aria-hidden="true"></canvas>
+        <div class="screen-caption"><span>LOSS L(w) ↑</span><span id="iteration">Step 000</span></div>
+        <svg id="plot" viewBox="0 0 760 540" role="img" aria-labelledby="plot-title plot-desc">
+          <title id="plot-title">Move a point along a loss curve to explore gradient descent</title><desc id="plot-desc">The left valley is the global minimum and the right valley is a higher local minimum. Drag the orange dot, or use the weight slider below.</desc>
+          <defs><pattern id="grid" x="65" y="55" width="105" height="105" patternUnits="userSpaceOnUse"><path d="M105 0H0V105" stroke="#dce4da" stroke-opacity=".1" fill="none"/></pattern><clipPath id="plot-clip"><rect x="55" y="30" width="650" height="445"/></clipPath></defs>
+          <rect x="65" y="55" width="630" height="420" fill="url(#grid)"/>
+          <path d="M65 55V475H695M380 55V475" fill="none" stroke="#aab9ac" stroke-opacity=".35"/>
+          <g fill="#a6b7aa" font-family="monospace" font-size="22"><text x="158" y="508">−2</text><text x="373" y="508">0</text><text x="582" y="508">2</text><text x="29" y="166">3</text><text x="29" y="271">2</text><text x="29" y="376">1</text></g>
+          <g clip-path="url(#plot-clip)"><path id="curve" stroke="#e4eadf" stroke-width="3" fill="none"/><g id="trail"></g><path id="baseline" stroke="#99ad9f" stroke-dasharray="5 6" fill="none"/><path id="tangent" stroke="#ff8b58" stroke-width="3" fill="none"/><path id="angle-arc" stroke="#ff8b58" stroke-width="2" fill="none"/></g>
+          <g fill="#b9c8bb" font-size="21" font-family="monospace"><path d="M222.5 363V409M537.5 300V350" stroke="#7d9383" stroke-dasharray="3 6"/><text x="222.5" y="433" text-anchor="middle">GLOBAL MIN</text><text x="537.5" y="375" text-anchor="middle">LOCAL MIN</text></g>
+          <g id="handle"><circle id="hit" r="45" fill="transparent"/><circle r="23" fill="#ff8b58" opacity=".15"/><circle r="10" fill="#ff8b58" stroke="#1e2521" stroke-width="3"/></g>
+        </svg>
+        <div class="screen-caption"><span><i class="tiny-dot"></i> DRAG THE POINT TO EXPLORE</span><span>WEIGHT w →</span></div>
+      </div>
+      <div class="readings"><div><span>SLOPE / m</span><output id="slope">—</output></div><div><span>ANGLE / θ</span><output id="angle">—</output></div><div><span>LOSS / L(w)</span><output id="loss">—</output></div><button id="run" type="button" class="run-button">Run descent</button></div>
+      <div class="instrument-foot"><span class="eyebrow" id="equation">Tangent: y = mw + b</span><details id="gradient-controls"><summary>Controls & the math <span>+</span></summary><div class="expanded-controls"><div class="sliders"><label for="weight">Weight w <output id="weight-label"></output><input id="weight" type="range" min="-2.6" max="2.6" step="0.001" value="2.3"></label><label for="rate">Learning rate η <output id="rate-label"></output><input id="rate" type="range" min="0.02" max="0.2" step="0.01" value="0.08"></label></div><div class="control-buttons"><button id="step" type="button">One step</button><button id="reset" type="button">Reset</button><button id="motion" type="button" aria-pressed="false">Pause ambience</button></div><p><code>w_next = w − η × slope</code><br>The tangent’s angle is atan(slope), with equal axis units. Each step moves opposite the gradient. A flat tangent can also be a hilltop.</p><p>A synthetic one-parameter loss landscape, illustrating an optimization idea used in neural-network training.</p></div></details></div>
+      <p class="instrument-status" id="status" role="status" aria-live="polite"></p>
+      <noscript><p>Enable JavaScript to move the point and explore gradient descent.</p></noscript>
+    </section>
+  </div>
+  <div class="hero-bottom eyebrow"><span>BUILDING WITH CURIOSITY. MEASURING WITH CARE.</span><a href="#work">SCROLL TO SELECTED WORK ↓</a></div>
+</section>
+<section id="work" class="section">
+  <div class="section-heading"><div><span class="eyebrow">01 / SELECTED WORK</span><h2>From idea to instrument.</h2></div><p>Research tools, native applications,<br>and the infrastructure in between.</p></div>
+  <div class="projects">
+    <article class="project project-featured"><a class="project-art biosignal-art" href="https://github.com/geddie212/BehaviorTrace" aria-label="BehaviorTrace on GitHub"><span class="art-label">BT / SIGNAL ACQUISITION</span><svg viewBox="0 0 500 200" aria-hidden="true"><path d="M0 80H45L57 70L68 95L81 30L95 125L110 80H150L162 68L173 92L188 26L200 125L214 80H253L266 69L277 95L291 30L306 125L320 80H360L375 69L385 95L399 30L414 125L430 80H500"/><path class="second" d="M0 155Q40 130 80 155T160 155T240 155T320 155T400 155T480 155"/></svg><span class="art-bottom">PHYSIOLOGY → LABELS → DATASETS <span>↗</span></span></a><div class="project-copy"><span class="eyebrow">RESEARCH INFRASTRUCTURE / WEB + PYTHON</span><h3>BehaviorTrace</h3><p>A toolkit for collecting participant-confirmed states alongside EmotiBit biosignals, then preparing labeled data for model training. In a toy activity-classification project, I used it to predict running, walking, sitting and standing.</p><div class="project-links"><a href="https://github.com/geddie212/BehaviorTrace">Explore repository ↗</a><a href="https://github.com/geddie212/BehaviorTrace_Docs">Documentation ↗</a></div><details><summary>Inside the project</summary><p>Study setup and participant labeling through a PWA; biosignal processing and SQL storage; window/stride workflows for mixed sampling rates. Built for EMA and state-confirmation studies.</p></details></div></article>
+    <article class="project"><a class="project-art watch-art" href="https://github.com/geddie212/AppleBehaviorTrace" aria-label="Apple BehaviorTrace on GitHub"><span class="art-label">AB / MOMENTARY ASSESSMENT</span><div class="watch-strap"><div class="watch-face"><span>STATE CHECK-IN</span><strong>How do<br>you feel?</strong><span class="watch-state">● Focused</span></div></div><span class="art-bottom">ILLUSTRATIVE INTERFACE <span>↗</span></span></a><div class="project-copy"><span class="eyebrow">NATIVE RESEARCH PROTOTYPE / SWIFTUI</span><h3>Apple BehaviorTrace</h3><p>Bringing study participation to the wrist. Timestamped state labels, HealthKit samples, and local-first collection on iPhone and Apple Watch.</p><div class="project-links"><a href="https://github.com/geddie212/AppleBehaviorTrace">Explore repository ↗</a></div><details><summary>Inside the project</summary><p>Uses WatchConnectivity and Supabase to connect study labels with health samples. This prototype focuses on data collection; on-device prediction is a future direction.</p></details></div></article>
+    <article class="project"><a class="project-art agent-art" href="https://github.com/geddie212/health-agent" aria-label="Health Agent on GitHub"><span class="art-label">HA / CONVERSATION → STRUCTURE</span><div class="chat-bubble">“I had eggs and toast.”</div><div class="record"><span>MEAL RECORD</span><div><b>Language.</b><br>Structured data.<br><em>Useful context.</em></div></div><span class="art-bottom">ILLUSTRATIVE WORKFLOW <span>↗</span></span></a><div class="project-copy"><span class="eyebrow">APPLIED AI / SWIFTUI + FASTAPI</span><h3>Health Agent</h3><p>A conversational approach to meal and workout logging, connecting a native iOS interface with structured records and health data.</p><div class="project-links"><a href="https://github.com/geddie212/health-agent">Explore repository ↗</a><a href="https://github.com/geddie212/health-agent/blob/main/ROADMAP.md">Development status ↗</a></div><details><summary>Inside the project</summary><p>Separates language interpretation from deterministic calculations. The repository documents implemented phases and future work; see its roadmap for current status.</p></details></div></article>
+  </div>
+</section>
+<section id="lab" class="section lab-section">
+  <div class="section-heading"><div><span class="eyebrow">02 / THE WORKBENCH</span><h2>Small experiments.<br>Visible ideas.</h2></div><p>A couple of things to play with.<br>Every control has a purpose.</p></div>
+  <div class="experiments">
+    <article class="experiment bio-experiment" id="biosignal-experiment">
+      <div class="experiment-heading"><span class="eyebrow">EXPERIMENT 01 / INSIDE BEHAVIORTRACE</span><span class="tag">SYNTHETIC TEACHING MODEL</span></div>
+      <h3>From a signal window<br>to a predicted state.</h3>
+      <p class="experiment-lede">A single sample tells us little. A window captures how a signal changes over time. In BehaviorTrace, I turn those windows into features a random forest can use to predict an activity.</p>
+      <div class="bio-layout">
+        <div class="bio-observation">
+          <div class="stage-heading"><span class="stage-number">01</span><div><h4>Select a window</h4><span>Each dot is one sample. Drag the shaded window or use the sliders.</span></div></div>
+          <div class="bio-presets" role="group" aria-label="Jump to a synthetic activity"><button type="button" data-activity="0">Sitting</button><button type="button" data-activity="1">Standing</button><button type="button" data-activity="2">Walking</button><button type="button" data-activity="3">Running</button></div>
+          <svg id="biosignal" viewBox="0 0 760 330" role="img" aria-labelledby="bio-title bio-desc"><title id="bio-title">Synthetic samples with a movable analysis window</title><desc id="bio-desc">Four synthetic activity segments. Orange points are inside the selected window. Triangles show local maxima and inverted triangles local minima. Larger labels mark the highest and lowest selected samples.</desc>
+            <defs><pattern id="bio-grid" width="58" height="55" patternUnits="userSpaceOnUse"><path d="M58 0H0V55" stroke="currentColor" stroke-opacity=".08" fill="none"/></pattern></defs>
+            <rect x="35" y="35" width="690" height="240" fill="url(#bio-grid)"/><path d="M35 35V275H725" fill="none" stroke="currentColor" stroke-opacity=".35"/>
+            <g id="bio-segments"></g><path id="bio-path" fill="none" stroke="currentColor" stroke-width="1.7" opacity=".5"/>
+            <g id="bio-points"></g><g id="bio-turns"></g><rect id="bio-window" y="35" height="240" rx="3" fill="#ef7140" fill-opacity=".12" stroke="#bc5129" stroke-width="2"/>
+            <g id="bio-extremes"></g><g font-family="monospace" font-size="16" fill="currentColor"><text x="35" y="22">AMPLITUDE (a.u.)</text><text x="725" y="318" text-anchor="end">SAMPLE INDEX →</text><text x="18" y="110" text-anchor="middle">1</text><text x="18" y="185" text-anchor="middle">0</text><text x="18" y="260" text-anchor="middle">−1</text></g>
+          </svg>
+          <div class="bio-legend"><span><i class="legend-dot"></i> Selected sample</span><span>▲ Local peak</span><span>▼ Local trough</span></div>
+          <div class="sliders"><label>Window position <output id="bio-position-label"></output><input id="bio-position" type="range" min="0" max="96" value="60"></label><label>Window width <output id="bio-width-label"></output><input id="bio-width" type="range" min="12" max="36" value="24"></label></div>
+          <output id="bio-result" class="experiment-output" aria-live="polite"></output>
+          <details class="sample-details"><summary>Inspect the selected samples</summary><div class="table-scroll" tabindex="0" role="region" aria-label="Selected sample values"><table><thead><tr><th>Sample</th><th>Value (a.u.)</th><th>Annotation</th></tr></thead><tbody id="bio-samples"></tbody></table></div></details>
+        </div>
+        <div class="bio-features"><div class="stage-heading"><span class="stage-number">02</span><div><h4>Describe the window</h4><span>Real statistics, recomputed from the selected samples.</span></div></div><div class="feature-vector" id="bio-features"></div><p class="fine-print">Min/max here are extremes within the window. Local peaks/troughs compare a sample with its two neighbours. Energy is Σx² and increases with both amplitude and sample count.</p></div>
+      </div>
+      <div class="pipeline-connector eyebrow">SELECTED SAMPLES → FEATURE VECTOR → MODEL → PREDICTION</div>
+      <div class="bio-inference">
+        <div class="forest-stage"><div class="stage-heading"><span class="stage-number">03</span><div><h4>Ask a forest of decision trees</h4><span>Five small trees, trained on generated examples. Open one to follow its decisions.</span></div></div><div id="forest-trees" class="forest-trees"></div></div>
+        <div class="prediction-stage"><div class="stage-heading"><span class="stage-number">04</span><div><h4>Combine their predictions</h4><span>Average the class proportions at the reached leaves.</span></div></div><div class="prediction-label"><span class="eyebrow">TOY MODEL OUTPUT</span><output id="bio-prediction"></output></div><div id="bio-scores" class="prediction-scores"></div><p class="fine-print">Scores describe this synthetic model’s output, not measured accuracy or confidence about a real person.</p></div>
+      </div>
+      <div class="bio-explanation"><details><summary>How this connects to BehaviorTrace</summary><p>During training, participant-confirmed activity labels are aligned with time windows. BehaviorTrace extracts features such as mean, standard deviation, minimum, maximum, energy, sample count and timing information across wearable channels. A random forest learns relationships between those features and the labels.</p><p>At prediction time, the pipeline selects a new window and computes the same features in the same order. Each trained tree follows feature thresholds to a leaf; their outputs are combined into a predicted activity. The forest does not choose the window itself—the preprocessing pipeline does.</p><p>My toy activity project predicted running, walking, sitting and standing. This interactive illustration uses a separate five-tree forest trained on synthetic data; BehaviorTrace’s training script configures 500 trees. Moving across an activity boundary also shows why a window can mix states.</p><a href="https://github.com/geddie212/BehaviorTrace/blob/main/train_model/train_emotibit_model.py">Explore the actual training pipeline ↗</a></details><details><summary>Where would a neural network fit?</summary><div class="nn-flow"><span>Signal window<br><small>raw samples or features</small></span><b>→</b><span class="neuron-icon" aria-label="Learned neural network layers">● ● ●<br> ● ● <br>● ● ●</span><b>→</b><span>Predicted state<br><small>model output</small></span></div><p>A neural network is an alternative model, not a stage after the random forest. Depending on its architecture, it could learn from engineered features or the sampled sequence itself. Its weights are learned with backpropagation and an optimiser such as gradient descent—the idea illustrated in the header. This demo runs the random-forest path.</p></details></div>
+      <p class="fine-print">Synthetic signals in arbitrary units, deliberately separated for illustration. Real activity or emotional-state prediction needs appropriate sensors, labels, and evaluation on held-out participants or sessions. <a href="https://scikit-learn.org/stable/modules/ensemble.html#forests-of-randomized-trees">About random forests ↗</a></p>
+    </article>
+    <article class="experiment sort-experiment" id="sorting-experiment">
+      <div class="experiment-heading"><span class="eyebrow">EXPERIMENT 02 / SIX WAYS TO SORT</span><span class="tag">ALGORITHMS + COMPLEXITY</span></div>
+      <h3>Same input.<br>Different ways to find order.</h3><p class="experiment-lede">Compare all six algorithms from my Java project. Change the algorithm to replay the same input, then try sorted, reversed or repeated values to see where their tradeoffs appear.</p>
+      <div class="sort-layout"><div class="sort-demonstration">
+        <div class="sort-selectors"><label for="sort-algorithm">Algorithm<select id="sort-algorithm"><option value="insertion">Insertion sort</option><option value="bubble">Bubble sort</option><option value="selection">Selection sort</option><option value="merge">Merge sort</option><option value="quick">Quicksort</option><option value="custom">Custom run-merge sort</option></select></label><label for="sort-input">Input shape<select id="sort-input"><option value="random">Shuffled</option><option value="sorted">Already sorted</option><option value="reverse">Reverse order</option><option value="duplicates">Repeated values</option></select></label></div>
+        <p id="sort-description"></p><div id="sort-bars" class="sort-bars" role="img" aria-label="Unsorted array"></div><div class="sort-legend"><span>Orange: active values</span><span>Green: established order</span></div>
+        <div class="control-buttons"><button id="sort-step" type="button">One step →</button><button id="sort-play" type="button">Play sort</button><button id="sort-replay" type="button">Replay input ↺</button><button id="sort-reset" type="button">New input ↻</button></div>
+        <label class="sort-speed" for="sort-speed">Playback speed<input id="sort-speed" type="range" min="1" max="5" value="3"></label>
+        <output id="sort-status" class="experiment-output" aria-live="polite"></output><p id="sort-explanation" class="step-explanation"></p>
+        <div class="sort-counters"><div><span>COMPARISONS</span><output id="sort-comparisons">0</output></div><div><span>ARRAY WRITES</span><output id="sort-writes">0</output></div><div><span>SWAPS</span><output id="sort-swaps">0</output></div></div>
+      </div><aside class="complexity-panel"><span class="eyebrow">HOW THE WORK GROWS</span><h4 id="complexity-name"></h4><dl id="sort-complexity"></dl><p id="complexity-note"></p><p class="fine-print">n = number of values. Space means peak auxiliary memory, including recursion, excluding the input and the visualisation’s snapshots. Big-O describes growth, not stopwatch time.</p><a id="sort-source" class="text-link" href="https://github.com/geddie212/sort_algorithms">View the Java source ↗</a></aside></div>
+      <details class="complexity-comparison"><summary>Compare all six: time, space and work on this input</summary><div class="table-scroll" tabindex="0" role="region" aria-label="Sorting complexity comparison"><table><thead><tr><th>Algorithm</th><th>Best time</th><th>Average time</th><th>Worst time</th><th>Auxiliary space</th><th>Comparisons on this input</th></tr></thead><tbody id="sort-comparison"></tbody></table></div><p class="fine-print">For the custom sort, r is the number of existing ascending runs: O(n + n log r), bounded by O(n log n). The displayed counters measure these browser implementations, not the original Java benchmark timings. The Java test harness also copies the input; that extra copy is excluded here.</p></details>
+      <p class="fine-print">Browser adaptations of the algorithms in <a href="https://github.com/geddie212/sort_algorithms">my Java project ↗</a>, with standard merge/partition handling for odd lengths and repeated values. <a href="https://algs4.cs.princeton.edu/cheatsheet/">Standard complexity reference ↗</a></p>
+    </article>
+  </div>
+</section>
+<section id="about" class="section about-section"><div class="about-title"><span class="eyebrow">03 / A LITTLE CONTEXT</span><h2>Curious about people.<br>Serious about systems.</h2></div><div class="about-copy"><p>I’m studying Computer Science at the University of San Francisco, with an interest in how wearable data can help us understand stress, cravings, and human emotional states.</p><p>I want to build research infrastructure that supports timely interventions and recovery from substance use. My work starts with the practical questions: how do we collect useful data, align it with lived experience, and make the process reproducible?</p><div class="education"><span class="eyebrow">UNIVERSITY OF SAN FRANCISCO</span><strong>B.S. Computer Science <span>2028</span></strong><span>Expected graduation · GPA 3.84 / 4.00</span></div><a class="text-link" href="resume.html">Read my résumé ↗</a></div></section>
+<section class="section notes-section"><div class="section-heading"><div><span class="eyebrow">04 / FIELD NOTES</span><h2>Document the process.</h2></div><p>Working documentation from my projects.</p></div><div class="note-list"><a href="https://github.com/geddie212/BehaviorTrace_Docs/blob/main/study_setup.md"><span class="eyebrow">01 / STUDY DESIGN</span><h3>Setting up a state-confirmation study</h3><span>Read the guide ↗</span></a><a href="https://github.com/geddie212/BehaviorTrace_Docs/blob/main/training_and_prediction.md"><span class="eyebrow">02 / DATA → MODEL</span><h3>From wearable signals to training windows</h3><span>Read the guide ↗</span></a><a href="https://github.com/geddie212/AppleBehaviorTrace"><span class="eyebrow">03 / NATIVE COLLECTION</span><h3>Taking momentary check-ins to the wrist</h3><span>Read the project notes ↗</span></a></div></section>
+<section class="section archive-section"><div class="section-heading"><div><span class="eyebrow">05 / PROJECT INDEX</span><h2>Other explorations.</h2></div><div class="filters" role="group" aria-label="Filter project archive"><button type="button" data-filter="all" aria-pressed="true">All</button><button type="button" data-filter="systems" aria-pressed="false">Algorithms</button><button type="button" data-filter="web" aria-pressed="false">Web</button><button type="button" data-filter="creative" aria-pressed="false">Creative</button></div></div><div class="archive-list">
+<a data-category="systems" href="https://github.com/geddie212/sort_algorithms"><span>01</span><strong>Sorting algorithm benchmarks</strong><span>Java / Algorithms</span><span>↗</span></a>
+<a data-category="web" href="https://github.com/geddie212/cafe_api"><span>02</span><strong>Café API</strong><span>Python / Flask / SQLite</span><span>↗</span></a>
+<a data-category="web" href="https://github.com/geddie212/coffee-and-wifi"><span>03</span><strong>Coffee & Wi-Fi</strong><span>Python / Flask</span><span>↗</span></a>
+<a data-category="creative" href="https://github.com/geddie212/color_extract"><span>04</span><strong>Color extraction</strong><span>Python / Image processing</span><span>↗</span></a>
+<a data-category="creative" href="https://github.com/geddie212/my_queue"><span>05</span><strong>My Queue</strong><span>HTML / CSS / Editorial</span><span>↗</span></a>
+<a data-category="web" href="https://github.com/geddie212/pauls_blog"><span>06</span><strong>Paul’s Blog</strong><span>Python / Flask</span><span>↗</span></a>
+</div><p id="filter-count" class="eyebrow" aria-live="polite">6 PROJECTS</p></section>
+<aside class="listening"><span class="listening-disc" aria-hidden="true">♪</span><div><span class="eyebrow">OFF THE WORKBENCH / FROM MY QUEUE</span><h3>Reading, listening, following a thread.</h3><p>A personal collection of music, podcasts, and things that caught my attention.</p></div><a class="text-link" href="https://geddie212.github.io/my_queue/">Browse the collection ↗</a></aside>
+<section id="contact" class="contact-section"><span class="eyebrow">06 / LET’S BUILD SOMETHING USEFUL</span><h2>Have an interesting problem?<br><a href="mailto:pauliusgedrimas@gmail.com">Let’s talk. <span>↗</span></a></h2><div class="contact-bottom"><a href="mailto:pauliusgedrimas@gmail.com">pauliusgedrimas@gmail.com</a><div><a href="https://github.com/geddie212">GitHub ↗</a><a href="https://linkedin.com/in/paul-ged">LinkedIn ↗</a><a href="resume.html">Résumé ↗</a></div></div></section>
+</main>
+<footer class="site-footer eyebrow"><span>© 2026 PAUL GEDRIMAS</span><span>DESIGNED WITH INTENT. BUILT WITH CURIOSITY.</span><a href="#">BACK TO TOP ↑</a></footer>
+</div>
+</body>
+</html>
