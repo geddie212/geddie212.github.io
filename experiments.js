@@ -54,28 +54,297 @@
   for(const name of ['pointerup','pointercancel','lostpointercapture'])$('bio-window').addEventListener(name,event=>{if(event.pointerId===dragId)dragId=null;});
   bio();
 
+
+
   const motion=matchMedia('(prefers-reduced-motion: reduce)');
-  let input=[],traces={},states=[],position=0,timer=null;
-  function stop(){clearTimeout(timer);timer=null;$('sort-play').textContent='Play sort';}
-  function draw(){const state=states[position],finished=position===states.length-1;
-    $('sort-bars').replaceChildren(...state.values.map((value,i)=>{const bar=element('span');bar.style.height=`${value*1.5}px`;bar.className=state.active.includes(i)?'active':state.settled.includes(i)?'sorted':'';bar.append(element('b',String(value)));return bar;}));
-    $('sort-bars').setAttribute('aria-label',`Array: ${state.values.join(', ')}. ${state.message}`);
-    $('sort-status').textContent=finished?`SORTED · ${input.length} VALUES`:`STEP ${position} / ${states.length-1}`;
-    $('sort-explanation').textContent=state.message;
-    $('sort-comparisons').textContent=String(state.comparisons);$('sort-writes').textContent=String(state.writes);$('sort-swaps').textContent=String(state.swaps);
-    $('sort-step').disabled=finished;$('sort-play').disabled=finished;
+  const SVGNS='http://www.w3.org/2000/svg';
+  const MKL_PLOT_W=1000,MKL_PAD_SPREAD=60,MKL_PAD_PACKED=120,MKL_SPLIT_GAP=40,MKL_MERGE_GAP=260;
+  const MKL_RX=36,MKL_RY=19,MKL_TOP=42,MKL_BOTTOM=92;
+  const MKL_GAP={3:66,2:50,1:42};
+  const MKL_BOX_H=26;
+  const MKL_SPEED=3;
+  let mklLists=[],mklTrace=null,mklPosition=0,mklTimer=null,mklGap=50,mklHeight=400;
+  let mklColumnEls=new Map(),mklBoxWidths={},mklBoxSeen=new Set(),mklSplitLineEl=null,mklArrayDecorEl=null;
+  function mklStop(){clearTimeout(mklTimer);mklTimer=null;$('mkl-play').classList.remove('is-playing');$('mkl-play').setAttribute('aria-label','Play');$('mkl-play').setAttribute('aria-pressed','false');}
+  /* Long chains compress their vertical spacing so the fixed-size board never needs to resize. */
+  const mklStrideFor=count=>count>=8?1:(count>=5?2:3);
+
+  /* ---- ASCII panel: only the mergeSort(...) call trace now lives here as plain text ---- */
+  const gridNew=()=>({rows:[]});
+  function gridPut(grid,x,y,ch,cls){
+    if(x<0||y<0)return;
+    while(grid.rows.length<=y)grid.rows.push([]);
+    const row=grid.rows[y];
+    while(row.length<x)row.push(null);
+    row[x]={ch,cls:cls||''};
   }
-  function select(){stop();position=0;const kind=$('sort-algorithm').value,meta=SortModel.algorithms[kind];states=traces[kind];$('sort-description').textContent=meta.description;$('complexity-name').textContent=meta.name;$('complexity-note').textContent=meta.note;$('sort-source').href=`https://github.com/geddie212/sort_algorithms/blob/main/${meta.file}`;
-    $('sort-complexity').replaceChildren(...[['Best time',meta.best],['Average time',meta.average],['Worst time',meta.worst],['Auxiliary space',meta.space]].map(([title,value])=>{const row=element('div');row.append(element('dt',title),element('dd',value));return row;}));
-    document.querySelectorAll('#sort-comparison tr').forEach(row=>row.classList.toggle('selected',row.dataset.sort===kind));draw();
+  function gridText(grid,x,y,text,cls){for(let i=0;i<text.length;i++)gridPut(grid,x+i,y,text[i],cls);}
+  function gridRender(grid){
+    const frag=document.createDocumentFragment();
+    grid.rows.forEach((row,index)=>{
+      const segments=[];
+      for(let x=0;x<row.length;x++){
+        const cell=row[x]||{ch:' ',cls:''};
+        const last=segments[segments.length-1];
+        if(last&&last.cls===cell.cls)last.text+=cell.ch;else segments.push({cls:cell.cls,text:cell.ch});
+      }
+      for(const segment of segments){
+        if(segment.cls)frag.append(element('span',segment.text,segment.cls));
+        else frag.append(document.createTextNode(segment.text));
+      }
+      if(index<grid.rows.length-1)frag.append(document.createTextNode('\n'));
+    });
+    return frag;
   }
-  function prepare(){stop();const shape=$('sort-input').value;input=[18,24,31,37,43,49,55,62,69,77,86,96];if(shape==='reverse')input.reverse();if(shape==='duplicates')input=[43,18,69,43,18,69,43,18,69,43,18,69];if(shape==='random'){for(let i=input.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[input[i],input[j]]=[input[j],input[i]];}}
-    traces=Object.fromEntries(Object.keys(SortModel.algorithms).map(key=>[key,SortModel.trace(key,input)]));
-    $('sort-comparison').replaceChildren(...Object.entries(SortModel.algorithms).map(([key,meta])=>{const row=element('tr');row.dataset.sort=key;[meta.name,meta.best,meta.average,meta.worst,meta.space,traces[key].at(-1).comparisons].forEach(value=>row.append(element('td',String(value))));return row;}));select();
+  let mklLastCalls=null,mklLastCurrent=-1;
+  function mklPaintCalls(state){
+    if(state.calls){mklLastCalls=state.calls;mklLastCurrent=state.current;}
+    const grid=gridNew();
+    if(mklLastCalls)mklLastCalls.forEach((call,index)=>gridText(grid,0,index,call.text,state.calls&&index===mklLastCurrent?'mkl-x-accent':(call.leaf?'mkl-x-dim':'')));
+    else gridText(grid,0,0,'mergeSort(lists, 0, '+(state.k-1)+') has not been called yet.','mkl-x-dim');
+    return grid;
   }
-  function advance(){if(position>=states.length-1){stop();return false;}position++;draw();if(position===states.length-1){stop();return false;}return true;}
-  function tick(){if(advance())timer=setTimeout(tick,720-Number($('sort-speed').value)*125);}
-  $('sort-step').addEventListener('click',()=>{stop();advance();});$('sort-reset').addEventListener('click',prepare);$('sort-replay').addEventListener('click',select);$('sort-algorithm').addEventListener('change',select);$('sort-input').addEventListener('change',prepare);
-  $('sort-play').addEventListener('click',()=>{if(timer!==null){stop();return;}if(motion.matches){position=states.length-1;draw();return;}$('sort-play').textContent='Pause';tick();});
-  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});motion.addEventListener('change',stop);new IntersectionObserver(entries=>{if(!entries[0].isIntersecting)stop();}).observe($('sort-bars'));prepare();
+
+  /* ---- SVG board: one persistent <g> per chain key (l-r), reused and re-positioned ----
+     ---- every step, so CSS transitions animate the slide/fade instead of a hard jump.  ---- */
+  const mklLeafKey=i=>`${i}-${i}`;
+  /* Returns a function node -> gap size (0 = still one unsplit group). A node that is
+     the one actively merging this exact step reserves extra room: it must fit three
+     columns (ls, the growing out chain, rs), not just the usual two-way split. */
+  function mklGapForNode(state){
+    if(state.phase==='divide'){
+      const visited=new Set((state.callKeys||[]).slice(0,(state.current??-1)+1));
+      const leafKeys=new Set(Array.from({length:state.k},(_,i)=>mklLeafKey(i)));
+      return node=>(visited.has(node.key)&&!leafKeys.has(node.key))?MKL_SPLIT_GAP:0;
+    }
+    if(state.phase==='lists'||state.phase==='array')return()=>0;
+    const mergingKey=state.phase==='merge'&&state.range?`${state.range[0]}-${state.range[1]}`:null;
+    return node=>{
+      const open=state.chains.some(c=>c.l===node.left.l&&c.r===node.left.r)
+        &&state.chains.some(c=>c.l===node.right.l&&c.r===node.right.r);
+      if(!open)return 0;
+      return node.key===mergingKey?MKL_MERGE_GAP:MKL_SPLIT_GAP;
+    };
+  }
+  function mklLeafCount(node){return node.leaf?1:mklLeafCount(node.left)+mklLeafCount(node.right);}
+  function mklLeafPositions(tree,k,gapFor,packed){
+    const pad=packed?MKL_PAD_PACKED:MKL_PAD_SPREAD;
+    const positions={};
+    function assign(node,x0,x1){
+      if(node.leaf){positions[node.l]=(x0+x1)/2;return;}
+      const gap=gapFor(node);
+      const leftLeaves=mklLeafCount(node.left),rightLeaves=mklLeafCount(node.right);
+      const leftWidth=(x1-x0-gap)*leftLeaves/(leftLeaves+rightLeaves);
+      assign(node.left,x0,x0+leftWidth);
+      assign(node.right,x0+leftWidth+gap,x1);
+    }
+    assign(tree,pad,MKL_PLOT_W-pad);
+    return positions;
+  }
+  function mklArrow(x,yFrom,yTo){
+    const g=document.createElementNS(SVGNS,'g');
+    g.setAttribute('class','mkl-arrow-g');
+    g.append(
+      svgElement('line',{x1:x,y1:yFrom,x2:x,y2:yTo+7}),
+      svgElement('path',{d:`M${x-5} ${yTo+10}L${x} ${yTo}L${x+5} ${yTo+10}Z`})
+    );
+    return g;
+  }
+  function mklNodeShape(x,y,node,opts){
+    opts=opts||{};
+    const g=document.createElementNS(SVGNS,'g');
+    g.setAttribute('class','mkl-node'+(opts.dim?' mkl-node-dim':''));
+    g.append(svgElement('ellipse',{cx:x+3,cy:y+3,rx:MKL_RX,ry:MKL_RY,class:'mkl-node-shadow'}));
+    if(opts.active)g.append(svgElement('ellipse',{cx:x,cy:y,rx:MKL_RX+5,ry:MKL_RY+5,class:'mkl-node-ring'}));
+    g.append(svgElement('ellipse',{cx:x,cy:y,rx:MKL_RX,ry:MKL_RY,class:'mkl-origin-'+node.o}));
+    g.append(svgElement('text',{x,y:y+5,'text-anchor':'middle',class:'mkl-node-text'},String(node.v)));
+    return g;
+  }
+  function mklColumnLabel(col){
+    if(col.kind==='ls')return'ls = '+col.label;
+    if(col.kind==='rs')return'rs = '+col.label;
+    if(col.kind==='out')return'out = '+col.label;
+    return col.label;
+  }
+  function mklColumnLabelClass(col){
+    if(col.kind==='out')return'mkl-x-accent';
+    if(col.kind==='ls'||col.kind==='rs')return'mkl-x-ink';
+    return col.l===col.r?'mkl-origin-text-'+col.l:'mkl-x-ink';
+  }
+  function mklBuildColumnInner(chain,packed){
+    const n=chain.values.length,baseY=mklHeight-MKL_BOTTOM;
+    const els=[];
+    els.push(svgElement('text',{x:0,y:26,'text-anchor':'middle',class:'mkl-col-label '+mklColumnLabelClass(chain)},mklColumnLabel(chain)));
+    const topY=n?baseY-mklGap*(n-1):baseY,nullY=topY-MKL_RY-20;
+    els.push(svgElement('text',{x:0,y:nullY,'text-anchor':'middle',class:'mkl-null'},'⌀'));
+    const pointer=chain.kind==='ls'?'ls':chain.kind==='rs'?'rs':null;
+    if(n)els.push(mklArrow(0,topY-MKL_RY-2,nullY+6));
+    else if(pointer)els.push(svgElement('text',{x:MKL_RX+16,y:nullY+6,class:'mkl-pointer-label mkl-x-dim'},'◀ '+pointer+' = ⌀'));
+    for(let i=0;i<n;i++){
+      const y=baseY-mklGap*i;
+      const dim=pointer&&i<chain.consumed;
+      const active=pointer?i===chain.consumed:(chain.kind==='out'&&i===n-1);
+      els.push(mklNodeShape(0,y,chain.values[i],{dim,active}));
+      if(i<n-1)els.push(mklArrow(0,y-MKL_RY-2,y-mklGap+MKL_RY+2));
+      if(pointer&&i===chain.consumed)els.push(svgElement('text',{x:MKL_RX+16,y:y+5,class:'mkl-pointer-label mkl-x-accent'},'◀ '+pointer));
+    }
+    if(pointer&&chain.consumed>=n&&n)els.push(svgElement('text',{x:MKL_RX+16,y:nullY+6,class:'mkl-pointer-label mkl-x-dim'},'◀ '+pointer+' = ⌀'));
+    if(chain.kind==='out'&&n){
+      els.push(svgElement('text',{x:MKL_RX+16,y:topY+5,class:'mkl-pointer-label mkl-x-accent'},'◀ curr'));
+      if(n>1)els.push(svgElement('text',{x:MKL_RX+16,y:baseY+5,class:'mkl-pointer-label mkl-x-dim'},'◀ head'));
+    }
+    if(n){
+      els.push(svgElement('text',{x:0,y:baseY+24,'text-anchor':'middle',class:'mkl-head-label'},'▲'));
+      if(!packed){
+        els.push(svgElement('text',{x:0,y:baseY+40,'text-anchor':'middle',class:'mkl-head-label'},'head'));
+      }else if(chain.l===chain.r){
+        const boxW=mklBoxWidths[chain.l]||140;
+        const fresh=!mklBoxSeen.has(chain.l);mklBoxSeen.add(chain.l);
+        const fadeCls=fresh?' mkl-fade-in':'';
+        els.push(svgElement('rect',{x:-boxW/2,y:baseY+30,width:boxW,height:MKL_BOX_H,rx:4,class:'mkl-array-box mkl-origin-'+chain.l+fadeCls}));
+        els.push(svgElement('text',{x:0,y:baseY+30+MKL_BOX_H+20,'text-anchor':'middle',class:'mkl-array-index mkl-origin-text-'+chain.l+fadeCls},String(chain.l)));
+      }
+    }
+    return els;
+  }
+  function mklBoundaryNodes(tree){
+    const byM={};
+    (function walk(node){if(!node.leaf){byM[node.m]=node;walk(node.left);walk(node.right);}})(tree);
+    return byM;
+  }
+  function mklArrayDecor(state,leafPos,gapFor,boundaryNodes){
+    if(!state.array||state.phase==='done')return[];
+    const k=state.k,baseY=mklHeight-MKL_BOTTOM,y=baseY+30+MKL_BOX_H/2+5;
+    const els=[];
+    let runStart=0;
+    for(let i=0;i<k;i++){
+      const boundaryOpen=i<k-1&&boundaryNodes[i]&&gapFor(boundaryNodes[i])>0;
+      if(i===runStart)els.push(svgElement('text',{x:leafPos[i]-(mklBoxWidths[i]||140)/2-13,y,'text-anchor':'middle',class:'mkl-array-bracket'},'['));
+      if(i<k-1&&!boundaryOpen){
+        const midX=(leafPos[i]+leafPos[i+1])/2;
+        els.push(svgElement('text',{x:midX,y,'text-anchor':'middle',class:'mkl-array-pipe'},'|'));
+      }else{
+        els.push(svgElement('text',{x:leafPos[i]+(mklBoxWidths[i]||140)/2+13,y,'text-anchor':'middle',class:'mkl-array-bracket'},']'));
+        runStart=i+1;
+      }
+    }
+    return els;
+  }
+  function mklSplitLine(state,leafPos){
+    if(state.splitM==null)return[];
+    /* During a merge, align the line to where the growing "out" chain actually sits
+       (midpoint of its full l..r range) rather than the raw leaf boundary — with
+       leaf-count-proportional spacing those two points coincide only when the two
+       sides being merged have an equal number of leaves. */
+    const x=state.phase==='merge'&&state.range
+      ?(leafPos[state.range[0]]+leafPos[state.range[1]])/2
+      :(leafPos[state.splitM]+leafPos[state.splitM+1])/2;
+    const els=[svgElement('line',{x1:x,y1:10,x2:x,y2:mklHeight-14,class:'mkl-split-line'})];
+    if(state.phase==='divide')els.push(svgElement('text',{x:x+10,y:28,class:'mkl-split-label'},'split'));
+    return els;
+  }
+  /* Two layers: the split line sits behind every column (prepended), the array
+     row decorations (brackets/pipes) sit in front of the array boxes (appended) —
+     otherwise the box fills paint over the pipe glyphs at the seam. */
+  function mklEnsureSplitLineEl(){
+    if(!mklSplitLineEl){
+      mklSplitLineEl=document.createElementNS(SVGNS,'g');
+      mklSplitLineEl.setAttribute('class','mkl-split-line-g');
+      $('mkl-board').prepend(mklSplitLineEl);
+    }
+    return mklSplitLineEl;
+  }
+  function mklEnsureArrayDecorEl(){
+    if(!mklArrayDecorEl){
+      mklArrayDecorEl=document.createElementNS(SVGNS,'g');
+      mklArrayDecorEl.setAttribute('class','mkl-array-decor-g');
+      $('mkl-board').appendChild(mklArrayDecorEl);
+    }
+    return mklArrayDecorEl;
+  }
+  function mklEnsureColumn(key){
+    let entry=mklColumnEls.get(key);
+    if(!entry){
+      const g=document.createElementNS(SVGNS,'g');
+      g.setAttribute('class','mkl-column');
+      g.style.opacity='0';
+      $('mkl-board').appendChild(g);
+      entry={g,fading:false};
+      mklColumnEls.set(key,entry);
+    }
+    if(entry.fading){clearTimeout(entry.fading);entry.fading=false;}
+    return entry;
+  }
+  function mklSyncBoard(state){
+    const packed=!!state.array;
+    const gapFor=mklGapForNode(state);
+    const leafPos=mklLeafPositions(mklTrace.tree,state.k,gapFor,packed);
+    const boundaryNodes=mklBoundaryNodes(mklTrace.tree);
+    mklEnsureSplitLineEl().replaceChildren(...mklSplitLine(state,leafPos));
+    const seen=new Set();
+    for(const chain of state.chains){
+      const key=`${chain.l}-${chain.r}`;
+      seen.add(key);
+      const x=(leafPos[chain.l]+leafPos[chain.r])/2;
+      const entry=mklEnsureColumn(key);
+      entry.g.style.transform=`translateX(${x}px)`;
+      entry.g.style.opacity='1';
+      entry.g.replaceChildren(...mklBuildColumnInner(chain,packed));
+    }
+    for(const[key,entry]of mklColumnEls){
+      if(!seen.has(key)&&!entry.fading){
+        entry.g.style.opacity='0';
+        entry.fading=setTimeout(()=>{entry.g.remove();mklColumnEls.delete(key);},420);
+      }
+    }
+    const arrayDecorEl=mklEnsureArrayDecorEl();
+    arrayDecorEl.replaceChildren(...mklArrayDecor(state,leafPos,gapFor,boundaryNodes));
+    $('mkl-board').appendChild(arrayDecorEl);
+  }
+  function mklDraw(){
+    const state=mklTrace.states[mklPosition],finished=mklPosition===mklTrace.states.length-1;
+    $('mkl-phase').textContent=state.title;
+    mklSyncBoard(state);
+    $('mkl-canvas').replaceChildren(gridRender(mklPaintCalls(state)));
+    $('mkl-board-wrap').setAttribute('aria-label',state.message);
+    const stepLabel=`STEP ${mklPosition} / ${mklTrace.states.length-1} · ${state.phase.toUpperCase()}`;
+    $('mkl-status').textContent=finished?`${stepLabel} · DONE — ${mklLists.length} LISTS MERGED`:stepLabel;
+    $('mkl-explanation').textContent=state.message;
+    $('mkl-comparisons').textContent=String(state.comparisons);$('mkl-writes').textContent=String(state.writes);$('mkl-merges').textContent=String(state.merges);
+    $('mkl-step').disabled=finished;$('mkl-play').disabled=finished;
+    $('mkl-back').disabled=mklPosition===0;
+  }
+  function mklPrepare(){
+    mklStop();mklLists=MergeKListsModel.randomLists();mklTrace=MergeKListsModel.trace(mklLists);mklPosition=0;
+    for(const[,entry]of mklColumnEls){clearTimeout(entry.fading);entry.g.remove();}
+    mklColumnEls=new Map();mklBoxSeen=new Set();
+    mklLastCalls=null;mklLastCurrent=-1;
+    const totalNodes=mklTrace.totalNodes;
+    mklGap=MKL_GAP[mklStrideFor(totalNodes)];
+    mklHeight=MKL_TOP+mklGap*totalNodes+MKL_BOTTOM;
+    /* Box width is sized to each leaf's own baseline (no-gap) spacing, not one global
+       constant — otherwise a gap opening deep in the tree is too small to ever show
+       through boxes sized for the much wider top-level spacing. */
+    const basePos=mklLeafPositions(mklTrace.tree,mklTrace.k,()=>0,true);
+    mklBoxWidths={};
+    for(let i=0;i<mklTrace.k;i++){
+      const toLeft=i>0?basePos[i]-basePos[i-1]:Infinity;
+      const toRight=i<mklTrace.k-1?basePos[i+1]-basePos[i]:Infinity;
+      mklBoxWidths[i]=Math.max(60,Math.min(toLeft,toRight)-28);
+    }
+    $('mkl-board').setAttribute('viewBox',`0 0 ${MKL_PLOT_W} ${mklHeight}`);
+    $('mkl-k-value').textContent=String(mklLists.length);
+    $('mkl-levels-value').textContent=String(totalNodes);
+    mklDraw();
+  }
+  function mklReplay(){mklStop();mklPosition=0;mklDraw();}
+  function mklAdvance(){if(mklPosition>=mklTrace.states.length-1){mklStop();return false;}mklPosition++;mklDraw();if(mklPosition===mklTrace.states.length-1){mklStop();return false;}return true;}
+  function mklBack(){if(mklPosition<=0)return;mklPosition--;mklDraw();}
+  function mklTick(){if(mklAdvance())mklTimer=setTimeout(mklTick,900-MKL_SPEED*150);}
+  $('mkl-step').addEventListener('click',()=>{mklStop();mklAdvance();});
+  $('mkl-back').addEventListener('click',()=>{mklStop();mklBack();});
+  $('mkl-replay').addEventListener('click',mklReplay);
+  $('mkl-new').addEventListener('click',mklPrepare);
+  $('mkl-play').addEventListener('click',()=>{if(mklTimer!==null){mklStop();return;}if(motion.matches){mklPosition=mklTrace.states.length-1;mklDraw();return;}$('mkl-play').classList.add('is-playing');$('mkl-play').setAttribute('aria-label','Pause');$('mkl-play').setAttribute('aria-pressed','true');mklTick();});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)mklStop();});motion.addEventListener('change',mklStop);new IntersectionObserver(entries=>{if(!entries[0].isIntersecting)mklStop();}).observe($('mkl-board-wrap'));mklPrepare();
 })();
