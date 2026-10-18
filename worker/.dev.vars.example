@@ -1,0 +1,5 @@
+# Copy this file to .dev.vars (gitignored) and fill in real values for
+# local `wrangler dev` runs. Never commit .dev.vars.
+GEMINI_API_KEY=your-gemini-api-key-here
+IP_HASH_SALT=any-random-string-local-dev-only
+ALLOWED_ORIGIN_DEV=http://localhost:4173,http://127.0.0.1:4173
