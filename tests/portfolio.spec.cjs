@@ -7,7 +7,7 @@ test('header, chat assistant, theme and local assets',async({page})=>{
   await expect(page.locator('#chat-messages .chat-msg-row')).toHaveCount(1);
   await page.getByRole('button',{name:"What's his tech stack?"}).click();
   await expect(page.locator('#chat-messages .is-user').last()).toContainText("stack?");
-  await expect(page.locator('#chat-messages .is-assistant').last()).toContainText('Python',{timeout:15000});
+  await expect(page.locator('#chat-messages .is-assistant').last()).toContainText('Python',{timeout:45000});
   await page.locator('#theme-toggle').click();await expect(page.locator('body')).toHaveClass(/dark/);await page.reload();await expect(page.locator('body')).toHaveClass(/dark/);
   await page.locator('#theme-toggle').click();
   await page.screenshot({path:'test-results/header-desktop.png',fullPage:false});
@@ -19,7 +19,7 @@ test('phone layout and chat via keyboard',async({browser})=>{
   await page.locator('#chat-input').scrollIntoViewIfNeeded();
   await page.locator('#chat-input').fill('How do I contact him?');
   await page.locator('#chat-input').press('Enter');
-  await expect(page.locator('#chat-messages .is-assistant').last()).toContainText('LinkedIn',{timeout:15000});
+  await expect(page.locator('#chat-messages .is-assistant').last()).toContainText('LinkedIn',{timeout:45000});
   await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:'test-results/home-mobile.png',fullPage:true});
   for(const width of [360,768,1024]){await page.setViewportSize({width,height:900});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();}
   await context.close();

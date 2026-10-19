@@ -90,6 +90,7 @@ async function callGemini(env, message) {
   });
   if (!res.ok) {
     const detail = await res.text().catch(() => '');
+    console.error(`Gemini API ${res.status}: ${detail.slice(0, 500)}`);
     throw new Error(`Gemini API ${res.status}: ${detail.slice(0, 300)}`);
   }
   const data = await res.json();

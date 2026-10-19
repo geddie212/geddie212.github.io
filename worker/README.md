@@ -88,20 +88,56 @@ so the generated file stays current:
 node ../scripts/build-knowledge.cjs
 ```
 
-## Deploying
+## Deploying to production
 
-```
-npm run deploy
-```
+This is the one-time setup — do these in order. Everything after step 5 is automated by
+`.github/workflows/deploy-worker.yml` from then on (it redeploys on every push that touches `worker/`,
+`knowledge/`, or `resume.html`).
 
-Deploys to `*.workers.dev` by default. Pointing the real `/api/chat` path at it from the static site (and,
-later, a custom route) is part of the next step — updating `assistant.js` — not done yet.
+1. **Create the real D1 database** (the local one from "One-time setup" above is a separate, local-only copy):
+   ```
+   npx wrangler d1 create paul-chatbot-db
+   ```
+   Paste the `database_id` it prints into `wrangler.toml`, replacing `REPLACE_WITH_YOUR_D1_DATABASE_ID`.
+
+2. **Apply the schema to it**:
+   ```
+   npm run db:init
+   ```
+
+3. **Set the production secrets** (separate from `.dev.vars` — these live on Cloudflare, not in this repo,
+   and persist across deploys without needing to be re-set):
+   ```
+   npx wrangler secret put GEMINI_API_KEY
+   npx wrangler secret put IP_HASH_SALT
+   ```
+
+4. **Deploy once by hand** to get the Worker's real URL:
+   ```
+   npm run deploy
+   ```
+   This prints something like `https://paul-chatbot.<your-subdomain>.workers.dev` — that's the live
+   endpoint. Open `../assistant.js` and replace `PRODUCTION_CHAT_ENDPOINT`'s placeholder value with
+   `https://<that-url>/api/chat`, then redeploy the static site as usual (just push — GitHub Pages serves
+   `assistant.js` directly, no build step).
+
+5. **Enable automatic deploys from GitHub** so future pushes redeploy the Worker without a manual step:
+   - Create a Cloudflare API token: Cloudflare dashboard → **My Profile → API Tokens → Create Token** →
+     use the **"Edit Cloudflare Workers"** template (grants Workers Scripts + D1 edit access).
+   - Find your Account ID: Cloudflare dashboard → **Workers & Pages** → it's in the right-hand sidebar.
+   - In this GitHub repo: **Settings → Secrets and variables → Actions → New repository secret**, add two:
+     - `CLOUDFLARE_API_TOKEN` — the token from above.
+     - `CLOUDFLARE_ACCOUNT_ID` — the account ID from above.
+   - That's it — `.github/workflows/deploy-worker.yml` picks these up automatically on the next push.
+
+Steps 1-4 need your Cloudflare login (`npx wrangler login` the first time you run any `wrangler` command
+against your real account, if you haven't already) and can't be done without it. Step 5's two values are
+the only things that need to reach me/this repo — paste them into GitHub's secret fields directly; they're
+never visible in plain text again once saved, including to repo admins.
 
 ## Not done yet
 
-Per the proposal's rollout plan, still to do after this backend is confirmed working locally:
-
-- Update `../assistant.js` / `../assistant-data.js` to call this endpoint instead of the scripted responder.
-- Wire up GitHub Actions to deploy the Worker on push (currently a manual `npm run deploy`).
 - Decide the open questions flagged in the proposal doc (rate-limit window, transcript inclusion, etc.) if not
   already settled.
+- Consider a custom domain/route instead of the `*.workers.dev` URL, if desired (not required — CORS already
+  lets `geddie212.github.io` call it cross-origin as-is).

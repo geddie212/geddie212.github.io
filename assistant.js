@@ -9,9 +9,15 @@
   const A = window.AssistantData;
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
-  // TODO before going live: point this at the deployed Worker's real URL
-  // (see worker/README.md) instead of the local dev server.
-  const CHAT_ENDPOINT = 'http://localhost:8787/api/chat';
+  // Picks the local dev Worker (localhost:8787) when the site itself is
+  // running locally, and the deployed Worker everywhere else (including the
+  // real geddie212.github.io) — so this file doesn't need hand-editing when
+  // moving between local testing and production. Fill in PRODUCTION_CHAT_ENDPOINT
+  // once you have your Worker's real URL (see worker/README.md's "Deploying" section).
+  const PRODUCTION_CHAT_ENDPOINT = 'https://REPLACE-WITH-YOUR-WORKER-SUBDOMAIN.workers.dev/api/chat';
+  const LOCAL_CHAT_ENDPOINT = 'http://localhost:8787/api/chat';
+  const isLocalHost = ['localhost', '127.0.0.1'].includes(location.hostname);
+  const CHAT_ENDPOINT = isLocalHost ? LOCAL_CHAT_ENDPOINT : PRODUCTION_CHAT_ENDPOINT;
   const RATE_LIMIT_MESSAGE = "That's the limit for this conversation — a small cap keeps the demo from burning through API quota. Thanks for chatting!";
   const NETWORK_ERROR_MESSAGE = "Couldn't reach the live assistant just now. Here's a scripted answer instead:";
 
@@ -158,16 +164,25 @@
   // back to the old scripted responder on any network/server failure, so
   // the widget still answers something rather than hanging forever.
   async function fetchReply(text) {
+    // Gemini's latency is real and occasionally much higher than typical
+    // (observed up to ~25s on a large system prompt) — a generous abort
+    // timeout is a safety net against a truly stuck connection, not a
+    // normal-case budget, so it's set well above what's actually been seen.
+    const controller = new AbortController();
+    const abortTimer = setTimeout(() => controller.abort(), 40000);
     let res;
     try {
       res = await fetch(CHAT_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ visitorId, message: text }),
+        signal: controller.signal,
       });
     } catch {
       const fallback = A.respond(text);
       return { text: `${NETWORK_ERROR_MESSAGE}\n\n${fallback.text}`, action: fallback.action, remaining: null };
+    } finally {
+      clearTimeout(abortTimer);
     }
 
     if (res.status === 429) {
