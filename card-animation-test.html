@@ -45,42 +45,73 @@
   .window-edge-line{stroke:var(--window-edge);stroke-width:1;opacity:.55}
 
   @keyframes window-sweep{
-    0%{transform:translateX(0)}
-    100%{transform:translateX(620px)}
+    0%{transform:translateX(4.1px)}
+    100%{transform:translateX(514.4px)}
   }
 
   .zone-label{font:700 13px/1 'Courier New',monospace;letter-spacing:.06em;fill:var(--accent);text-anchor:middle;opacity:0}
   .zone-label .lbl-dot{opacity:.8}
 
-  @keyframes lbl-sitting{0%,16%{opacity:1}20%{opacity:0}100%{opacity:0}}
-  @keyframes lbl-standing{0%,18%{opacity:0}22%,38%{opacity:1}40%{opacity:0}100%{opacity:0}}
-  @keyframes lbl-walking{0%,38%{opacity:0}42%,58%{opacity:1}60%{opacity:0}100%{opacity:0}}
-  @keyframes lbl-running{0%,58%{opacity:0}62%,79%{opacity:1}81%{opacity:0}100%{opacity:0}}
+  @keyframes lbl-sitting{0%,19%{opacity:1}23%{opacity:0}100%{opacity:0}}
+  @keyframes lbl-standing{0%,21%{opacity:0}26%,45%{opacity:1}48%{opacity:0}100%{opacity:0}}
+  @keyframes lbl-walking{0%,46%{opacity:0}51%,70%{opacity:1}73%{opacity:0}100%{opacity:0}}
+  @keyframes lbl-running{0%,71%{opacity:0}76%,94%{opacity:1}97%{opacity:0}100%{opacity:0}}
 
   .label-sitting{animation:lbl-sitting var(--dur) linear infinite}
   .label-standing{animation:lbl-standing var(--dur) linear infinite}
   .label-walking{animation:lbl-walking var(--dur) linear infinite}
   .label-running{animation:lbl-running var(--dur) linear infinite}
 
-  .marker{opacity:0;transform-box:fill-box;transform-origin:center}
+  .marker{opacity:0;transform-box:fill-box;transform-origin:center;animation-timing-function:ease;animation-duration:var(--dur);animation-iteration-count:infinite}
   .marker-peak{fill:var(--wave-main)}
   .marker-valley{fill:var(--wave-second)}
 
-  @keyframes m-standing{0%,29.3%{opacity:0;transform:scale(.4)}32.3%{opacity:1;transform:scale(1.15)}35.3%,100%{opacity:0;transform:scale(.4)}}
-  @keyframes m-walk-peak{0%,49%{opacity:0;transform:scale(.4)}52%{opacity:1;transform:scale(1.15)}55%,100%{opacity:0;transform:scale(.4)}}
-  @keyframes m-walk-valley{0%,51%{opacity:0;transform:scale(.4)}54%{opacity:1;transform:scale(1.15)}57%,100%{opacity:0;transform:scale(.4)}}
-  @keyframes m-run-peak1{0%,64.7%{opacity:0;transform:scale(.4)}67.7%{opacity:1;transform:scale(1.15)}70.7%,100%{opacity:0;transform:scale(.4)}}
-  @keyframes m-run-valley1{0%,65.9%{opacity:0;transform:scale(.4)}68.9%{opacity:1;transform:scale(1.15)}71.9%,100%{opacity:0;transform:scale(.4)}}
-  @keyframes m-run-peak2{0%,70.4%{opacity:0;transform:scale(.4)}73.4%{opacity:1;transform:scale(1.15)}76.4%,100%{opacity:0;transform:scale(.4)}}
-  @keyframes m-run-valley2{0%,71.6%{opacity:0;transform:scale(.4)}74.6%{opacity:1;transform:scale(1.15)}77.6%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m0{0%,3.4%{opacity:0;transform:scale(.4)}5.6%{opacity:1;transform:scale(1.15)}7.8%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m1{0%,6.8%{opacity:0;transform:scale(.4)}9.0%{opacity:1;transform:scale(1.15)}11.2%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m2{0%,10.7%{opacity:0;transform:scale(.4)}12.9%{opacity:1;transform:scale(1.15)}15.1%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m3{0%,15.6%{opacity:0;transform:scale(.4)}17.8%{opacity:1;transform:scale(1.15)}20.0%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m4{0%,18.1%{opacity:0;transform:scale(.4)}20.3%{opacity:1;transform:scale(1.15)}22.5%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m5{0%,22.0%{opacity:0;transform:scale(.4)}24.2%{opacity:1;transform:scale(1.15)}26.4%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m6{0%,25.9%{opacity:0;transform:scale(.4)}28.1%{opacity:1;transform:scale(1.15)}30.3%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m7{0%,31.8%{opacity:0;transform:scale(.4)}34.0%{opacity:1;transform:scale(1.15)}36.2%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m8{0%,38.1%{opacity:0;transform:scale(.4)}40.3%{opacity:1;transform:scale(1.15)}42.5%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m9{0%,42.6%{opacity:0;transform:scale(.4)}44.8%{opacity:1;transform:scale(1.15)}47.0%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m10{0%,45.5%{opacity:0;transform:scale(.4)}47.7%{opacity:1;transform:scale(1.15)}49.9%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m11{0%,46.0%{opacity:0;transform:scale(.4)}48.2%{opacity:1;transform:scale(1.15)}50.4%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m12{0%,48.4%{opacity:0;transform:scale(.4)}50.6%{opacity:1;transform:scale(1.15)}52.8%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m13{0%,50.9%{opacity:0;transform:scale(.4)}53.1%{opacity:1;transform:scale(1.15)}55.3%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m14{0%,54.3%{opacity:0;transform:scale(.4)}56.5%{opacity:1;transform:scale(1.15)}58.7%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m15{0%,56.8%{opacity:0;transform:scale(.4)}59.0%{opacity:1;transform:scale(1.15)}61.2%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m16{0%,60.2%{opacity:0;transform:scale(.4)}62.4%{opacity:1;transform:scale(1.15)}64.6%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m17{0%,63.1%{opacity:0;transform:scale(.4)}65.3%{opacity:1;transform:scale(1.15)}67.5%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m18{0%,66.1%{opacity:0;transform:scale(.4)}68.3%{opacity:1;transform:scale(1.15)}70.5%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m19{0%,68.5%{opacity:0;transform:scale(.4)}70.7%{opacity:1;transform:scale(1.15)}72.9%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m20{0%,70.0%{opacity:0;transform:scale(.4)}72.2%{opacity:1;transform:scale(1.15)}74.4%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m21{0%,71.0%{opacity:0;transform:scale(.4)}73.2%{opacity:1;transform:scale(1.15)}75.4%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m22{0%,72.9%{opacity:0;transform:scale(.4)}75.1%{opacity:1;transform:scale(1.15)}77.3%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m23{0%,74.4%{opacity:0;transform:scale(.4)}76.6%{opacity:1;transform:scale(1.15)}78.8%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m24{0%,75.9%{opacity:0;transform:scale(.4)}78.1%{opacity:1;transform:scale(1.15)}80.3%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m25{0%,77.8%{opacity:0;transform:scale(.4)}80.0%{opacity:1;transform:scale(1.15)}82.2%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m26{0%,79.3%{opacity:0;transform:scale(.4)}81.5%{opacity:1;transform:scale(1.15)}83.7%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m27{0%,80.8%{opacity:0;transform:scale(.4)}83.0%{opacity:1;transform:scale(1.15)}85.2%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m28{0%,82.7%{opacity:0;transform:scale(.4)}84.9%{opacity:1;transform:scale(1.15)}87.1%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m29{0%,84.2%{opacity:0;transform:scale(.4)}86.4%{opacity:1;transform:scale(1.15)}88.6%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m30{0%,86.2%{opacity:0;transform:scale(.4)}88.4%{opacity:1;transform:scale(1.15)}90.6%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m31{0%,87.6%{opacity:0;transform:scale(.4)}89.8%{opacity:1;transform:scale(1.15)}92.0%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m32{0%,89.6%{opacity:0;transform:scale(.4)}91.8%{opacity:1;transform:scale(1.15)}94.0%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m33{0%,91.1%{opacity:0;transform:scale(.4)}93.3%{opacity:1;transform:scale(1.15)}95.5%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m34{0%,92.5%{opacity:0;transform:scale(.4)}94.7%{opacity:1;transform:scale(1.15)}96.9%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m35{0%,94.5%{opacity:0;transform:scale(.4)}96.7%{opacity:1;transform:scale(1.15)}98.9%,100%{opacity:0;transform:scale(.4)}}
+  @keyframes kf-m36{0%,95.0%{opacity:0;transform:scale(.4)}97.2%{opacity:1;transform:scale(1.15)}99.4%,100%{opacity:0;transform:scale(.4)}}
 
-  .m-standing{animation:m-standing var(--dur) ease infinite}
-  .m-walk-peak{animation:m-walk-peak var(--dur) ease infinite}
-  .m-walk-valley{animation:m-walk-valley var(--dur) ease infinite}
-  .m-run-peak1{animation:m-run-peak1 var(--dur) ease infinite}
-  .m-run-valley1{animation:m-run-valley1 var(--dur) ease infinite}
-  .m-run-peak2{animation:m-run-peak2 var(--dur) ease infinite}
-  .m-run-valley2{animation:m-run-valley2 var(--dur) ease infinite}
+  .m0{animation-name:kf-m0}.m1{animation-name:kf-m1}.m2{animation-name:kf-m2}.m3{animation-name:kf-m3}.m4{animation-name:kf-m4}
+  .m5{animation-name:kf-m5}.m6{animation-name:kf-m6}.m7{animation-name:kf-m7}.m8{animation-name:kf-m8}.m9{animation-name:kf-m9}
+  .m10{animation-name:kf-m10}.m11{animation-name:kf-m11}.m12{animation-name:kf-m12}.m13{animation-name:kf-m13}.m14{animation-name:kf-m14}
+  .m15{animation-name:kf-m15}.m16{animation-name:kf-m16}.m17{animation-name:kf-m17}.m18{animation-name:kf-m18}.m19{animation-name:kf-m19}
+  .m20{animation-name:kf-m20}.m21{animation-name:kf-m21}.m22{animation-name:kf-m22}.m23{animation-name:kf-m23}.m24{animation-name:kf-m24}
+  .m25{animation-name:kf-m25}.m26{animation-name:kf-m26}.m27{animation-name:kf-m27}.m28{animation-name:kf-m28}.m29{animation-name:kf-m29}
+  .m30{animation-name:kf-m30}.m31{animation-name:kf-m31}.m32{animation-name:kf-m32}.m33{animation-name:kf-m33}.m34{animation-name:kf-m34}
+  .m35{animation-name:kf-m35}.m36{animation-name:kf-m36}
 
   .paused .capture-window,.paused .zone-label,.paused .marker{animation-play-state:paused}
 
@@ -142,13 +173,43 @@
             </g>
           </g>
 
-          <polygon class="marker marker-peak m-standing" points="200,88.8 195,97.8 205,97.8"/>
-          <polygon class="marker marker-peak m-walk-peak" points="322.5,70.9 316.5,81.9 328.5,81.9"/>
-          <polygon class="marker marker-valley m-walk-valley" points="335.0,140.0 329.0,129.0 341.0,129.0"/>
-          <polygon class="marker marker-peak m-run-peak1" points="420.0,56.8 414.0,67.8 426.0,67.8"/>
-          <polygon class="marker marker-valley m-run-valley1" points="427.5,158.6 421.5,147.6 433.5,147.6"/>
-          <polygon class="marker marker-peak m-run-peak2" points="455.0,54.9 449.0,65.9 461.0,65.9"/>
-          <polygon class="marker marker-valley m-run-valley2" points="462.5,163.0 456.5,152.0 468.5,152.0"/>
+          <polygon class="marker marker-peak m0" points="32.5,85.9 27.5,94.9 37.5,94.9"/>
+          <polygon class="marker marker-valley m1" points="50.0,114.8 45.0,105.8 55.0,105.8"/>
+          <polygon class="marker marker-peak m2" points="70.0,85.4 65.0,94.4 75.0,94.4"/>
+          <polygon class="marker marker-valley m3" points="95.0,114.0 90.0,105.0 100.0,105.0"/>
+          <polygon class="marker marker-peak m4" points="107.5,85.5 102.5,94.5 112.5,94.5"/>
+          <polygon class="marker marker-valley m5" points="127.5,118.5 122.5,109.5 132.5,109.5"/>
+          <polygon class="marker marker-peak m6" points="147.5,82.8 142.5,91.8 152.5,91.8"/>
+          <polygon class="marker marker-valley m7" points="177.5,116.8 172.5,107.8 182.5,107.8"/>
+          <polygon class="marker marker-peak m8" points="210.0,81.1 205.0,90.1 215.0,90.1"/>
+          <polygon class="marker marker-valley m9" points="232.5,118.9 227.5,109.9 237.5,109.9"/>
+          <polygon class="marker marker-peak m10" points="247.5,89.3 242.5,98.3 252.5,98.3"/>
+          <polygon class="marker marker-valley m11" points="250.0,132.4 245.0,123.4 255.0,123.4"/>
+          <polygon class="marker marker-peak m12" points="262.5,68.4 257.5,77.4 267.5,77.4"/>
+          <polygon class="marker marker-valley m13" points="275.0,137.4 270.0,128.4 280.0,128.4"/>
+          <polygon class="marker marker-peak m14" points="292.5,70.3 287.5,79.3 297.5,79.3"/>
+          <polygon class="marker marker-valley m15" points="305.0,140.8 300.0,131.8 310.0,131.8"/>
+          <polygon class="marker marker-peak m16" points="322.5,70.9 317.5,79.9 327.5,79.9"/>
+          <polygon class="marker marker-valley m17" points="337.5,140.0 332.5,131.0 342.5,131.0"/>
+          <polygon class="marker marker-peak m18" points="352.5,68.1 347.5,77.1 357.5,77.1"/>
+          <polygon class="marker marker-valley m19" points="365.0,139.3 360.0,130.3 370.0,130.3"/>
+          <polygon class="marker marker-peak m20" points="372.5,101.0 367.5,110.0 377.5,110.0"/>
+          <polygon class="marker marker-valley m21" points="377.5,160.6 372.5,151.6 382.5,151.6"/>
+          <polygon class="marker marker-peak m22" points="387.5,52.1 382.5,61.1 392.5,61.1"/>
+          <polygon class="marker marker-valley m23" points="395.0,151.2 390.0,142.2 400.0,142.2"/>
+          <polygon class="marker marker-peak m24" points="402.5,59.3 397.5,68.3 407.5,68.3"/>
+          <polygon class="marker marker-valley m25" points="412.5,150.3 407.5,141.3 417.5,141.3"/>
+          <polygon class="marker marker-peak m26" points="420.0,56.8 415.0,65.8 425.0,65.8"/>
+          <polygon class="marker marker-valley m27" points="427.5,158.6 422.5,149.6 432.5,149.6"/>
+          <polygon class="marker marker-peak m28" points="437.5,51.3 432.5,60.3 442.5,60.3"/>
+          <polygon class="marker marker-valley m29" points="445.0,158.3 440.0,149.3 450.0,149.3"/>
+          <polygon class="marker marker-peak m30" points="455.0,54.9 450.0,63.9 460.0,63.9"/>
+          <polygon class="marker marker-valley m31" points="462.5,163.0 457.5,154.0 467.5,154.0"/>
+          <polygon class="marker marker-peak m32" points="472.5,53.2 467.5,62.2 477.5,62.2"/>
+          <polygon class="marker marker-valley m33" points="480.0,151.4 475.0,142.4 485.0,142.4"/>
+          <polygon class="marker marker-peak m34" points="487.5,59.6 482.5,68.6 492.5,68.6"/>
+          <polygon class="marker marker-valley m35" points="497.5,154.4 492.5,145.4 502.5,145.4"/>
+          <polygon class="marker marker-peak m36" points="500.0,106.3 495.0,115.3 505.0,115.3"/>
 
           <text class="zone-label label-sitting" x="62" y="22"><tspan class="lbl-dot">● </tspan>SITTING</text>
           <text class="zone-label label-standing" x="187" y="22"><tspan class="lbl-dot">● </tspan>STANDING</text>
@@ -191,13 +252,43 @@
             </g>
           </g>
 
-          <polygon class="marker marker-peak m-standing" points="200,88.8 195,97.8 205,97.8"/>
-          <polygon class="marker marker-peak m-walk-peak" points="322.5,70.9 316.5,81.9 328.5,81.9"/>
-          <polygon class="marker marker-valley m-walk-valley" points="335.0,140.0 329.0,129.0 341.0,129.0"/>
-          <polygon class="marker marker-peak m-run-peak1" points="420.0,56.8 414.0,67.8 426.0,67.8"/>
-          <polygon class="marker marker-valley m-run-valley1" points="427.5,158.6 421.5,147.6 433.5,147.6"/>
-          <polygon class="marker marker-peak m-run-peak2" points="455.0,54.9 449.0,65.9 461.0,65.9"/>
-          <polygon class="marker marker-valley m-run-valley2" points="462.5,163.0 456.5,152.0 468.5,152.0"/>
+          <polygon class="marker marker-peak m0" points="32.5,85.9 27.5,94.9 37.5,94.9"/>
+          <polygon class="marker marker-valley m1" points="50.0,114.8 45.0,105.8 55.0,105.8"/>
+          <polygon class="marker marker-peak m2" points="70.0,85.4 65.0,94.4 75.0,94.4"/>
+          <polygon class="marker marker-valley m3" points="95.0,114.0 90.0,105.0 100.0,105.0"/>
+          <polygon class="marker marker-peak m4" points="107.5,85.5 102.5,94.5 112.5,94.5"/>
+          <polygon class="marker marker-valley m5" points="127.5,118.5 122.5,109.5 132.5,109.5"/>
+          <polygon class="marker marker-peak m6" points="147.5,82.8 142.5,91.8 152.5,91.8"/>
+          <polygon class="marker marker-valley m7" points="177.5,116.8 172.5,107.8 182.5,107.8"/>
+          <polygon class="marker marker-peak m8" points="210.0,81.1 205.0,90.1 215.0,90.1"/>
+          <polygon class="marker marker-valley m9" points="232.5,118.9 227.5,109.9 237.5,109.9"/>
+          <polygon class="marker marker-peak m10" points="247.5,89.3 242.5,98.3 252.5,98.3"/>
+          <polygon class="marker marker-valley m11" points="250.0,132.4 245.0,123.4 255.0,123.4"/>
+          <polygon class="marker marker-peak m12" points="262.5,68.4 257.5,77.4 267.5,77.4"/>
+          <polygon class="marker marker-valley m13" points="275.0,137.4 270.0,128.4 280.0,128.4"/>
+          <polygon class="marker marker-peak m14" points="292.5,70.3 287.5,79.3 297.5,79.3"/>
+          <polygon class="marker marker-valley m15" points="305.0,140.8 300.0,131.8 310.0,131.8"/>
+          <polygon class="marker marker-peak m16" points="322.5,70.9 317.5,79.9 327.5,79.9"/>
+          <polygon class="marker marker-valley m17" points="337.5,140.0 332.5,131.0 342.5,131.0"/>
+          <polygon class="marker marker-peak m18" points="352.5,68.1 347.5,77.1 357.5,77.1"/>
+          <polygon class="marker marker-valley m19" points="365.0,139.3 360.0,130.3 370.0,130.3"/>
+          <polygon class="marker marker-peak m20" points="372.5,101.0 367.5,110.0 377.5,110.0"/>
+          <polygon class="marker marker-valley m21" points="377.5,160.6 372.5,151.6 382.5,151.6"/>
+          <polygon class="marker marker-peak m22" points="387.5,52.1 382.5,61.1 392.5,61.1"/>
+          <polygon class="marker marker-valley m23" points="395.0,151.2 390.0,142.2 400.0,142.2"/>
+          <polygon class="marker marker-peak m24" points="402.5,59.3 397.5,68.3 407.5,68.3"/>
+          <polygon class="marker marker-valley m25" points="412.5,150.3 407.5,141.3 417.5,141.3"/>
+          <polygon class="marker marker-peak m26" points="420.0,56.8 415.0,65.8 425.0,65.8"/>
+          <polygon class="marker marker-valley m27" points="427.5,158.6 422.5,149.6 432.5,149.6"/>
+          <polygon class="marker marker-peak m28" points="437.5,51.3 432.5,60.3 442.5,60.3"/>
+          <polygon class="marker marker-valley m29" points="445.0,158.3 440.0,149.3 450.0,149.3"/>
+          <polygon class="marker marker-peak m30" points="455.0,54.9 450.0,63.9 460.0,63.9"/>
+          <polygon class="marker marker-valley m31" points="462.5,163.0 457.5,154.0 467.5,154.0"/>
+          <polygon class="marker marker-peak m32" points="472.5,53.2 467.5,62.2 477.5,62.2"/>
+          <polygon class="marker marker-valley m33" points="480.0,151.4 475.0,142.4 485.0,142.4"/>
+          <polygon class="marker marker-peak m34" points="487.5,59.6 482.5,68.6 492.5,68.6"/>
+          <polygon class="marker marker-valley m35" points="497.5,154.4 492.5,145.4 502.5,145.4"/>
+          <polygon class="marker marker-peak m36" points="500.0,106.3 495.0,115.3 505.0,115.3"/>
 
           <text class="zone-label label-sitting" x="62" y="22"><tspan class="lbl-dot">● </tspan>SITTING</text>
           <text class="zone-label label-standing" x="187" y="22"><tspan class="lbl-dot">● </tspan>STANDING</text>
