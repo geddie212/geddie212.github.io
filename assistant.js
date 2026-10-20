@@ -14,7 +14,7 @@
   // real geddie212.github.io) — so this file doesn't need hand-editing when
   // moving between local testing and production. Fill in PRODUCTION_CHAT_ENDPOINT
   // once you have your Worker's real URL (see worker/README.md's "Deploying" section).
-  const PRODUCTION_CHAT_ENDPOINT = 'https://REPLACE-WITH-YOUR-WORKER-SUBDOMAIN.workers.dev/api/chat';
+  const PRODUCTION_CHAT_ENDPOINT = 'https://paul-chatbot.geddie212portfolio.workers.dev/api/chat';
   const LOCAL_CHAT_ENDPOINT = 'http://localhost:8787/api/chat';
   const isLocalHost = ['localhost', '127.0.0.1'].includes(location.hostname);
   const CHAT_ENDPOINT = isLocalHost ? LOCAL_CHAT_ENDPOINT : PRODUCTION_CHAT_ENDPOINT;

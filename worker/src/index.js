@@ -72,31 +72,48 @@ function detectThemeAction(message) {
   return null;
 }
 
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+// Google's own 503 message for this model says demand spikes are "usually
+// temporary" — confirmed live in production (gemini-3.8-flash returned
+// 503 UNAVAILABLE under load, succeeding moments later on retry), so a
+// couple of short-backoff retries meaningfully improve real reliability
+// instead of surfacing a transient overload as a hard failure to the user.
 async function callGemini(env, message) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
-    body: JSON.stringify({
-      systemInstruction: { parts: [{ text: buildSystemPrompt() }] },
-      contents: [{ role: 'user', parts: [{ text: message }] }],
-      // thinkingBudget: 0 disables gemini-3.8-flash's default reasoning pass —
-      // confirmed via a direct API test that it cuts token usage by ~10x
-      // (101 → 10 tokens for a trivial prompt) with no quality loss for
-      // grounded, scripted-style Q&A like this. Worth revisiting if replies
-      // start feeling shallow on harder questions.
-      generationConfig: { maxOutputTokens: 400, temperature: 0.4, thinkingConfig: { thinkingBudget: 0 } },
-    }),
+  const body = JSON.stringify({
+    systemInstruction: { parts: [{ text: buildSystemPrompt() }] },
+    contents: [{ role: 'user', parts: [{ text: message }] }],
+    // thinkingBudget: 0 disables gemini-3.8-flash's default reasoning pass —
+    // confirmed via a direct API test that it cuts token usage by ~10x
+    // (101 → 10 tokens for a trivial prompt) with no quality loss for
+    // grounded, scripted-style Q&A like this. Worth revisiting if replies
+    // start feeling shallow on harder questions.
+    generationConfig: { maxOutputTokens: 400, temperature: 0.4, thinkingConfig: { thinkingBudget: 0 } },
   });
-  if (!res.ok) {
+
+  const attempts = 3;
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
+      body,
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const reply = (data.candidates?.[0]?.content?.parts ?? []).map(p => p.text || '').join('').trim();
+      const tokens = data.usageMetadata?.totalTokenCount ?? null;
+      return { reply, tokens };
+    }
     const detail = await res.text().catch(() => '');
-    console.error(`Gemini API ${res.status}: ${detail.slice(0, 500)}`);
-    throw new Error(`Gemini API ${res.status}: ${detail.slice(0, 300)}`);
+    console.error(`Gemini API ${res.status} (attempt ${attempt}/${attempts}): ${detail.slice(0, 500)}`);
+    lastError = new Error(`Gemini API ${res.status}: ${detail.slice(0, 300)}`);
+    const retryable = res.status === 429 || res.status === 503;
+    if (!retryable || attempt === attempts) break;
+    await sleep(attempt * 500);
   }
-  const data = await res.json();
-  const reply = (data.candidates?.[0]?.content?.parts ?? []).map(p => p.text || '').join('').trim();
-  const tokens = data.usageMetadata?.totalTokenCount ?? null;
-  return { reply, tokens };
+  throw lastError;
 }
 
 export default {

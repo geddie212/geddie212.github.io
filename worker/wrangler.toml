@@ -11,7 +11,7 @@ ALLOWED_ORIGIN = "https://geddie212.github.io"
 [[d1_databases]]
 binding = "DB"
 database_name = "paul-chatbot-db"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "d2d536ad-b57e-46ce-be14-6bd9462650e8"
 
 # GEMINI_API_KEY and IP_HASH_SALT are secrets, not vars — they're never
 # written to this file (which is committed to git). See ./README.md for
