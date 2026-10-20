@@ -1,13 +1,14 @@
 name: Deploy chatbot worker
 
+# Push-triggered auto-deploy is OFF until CLOUDFLARE_API_TOKEN and
+# CLOUDFLARE_ACCOUNT_ID are added as repo secrets (Settings > Secrets and
+# variables > Actions) — without them every push was failing and sending
+# failure-notification emails for no reason, since deploys have all been
+# manual (`npm run deploy`) so far and the site was never actually broken.
+# Once those two secrets exist, restore the `push:` block below (see git
+# history on this file, or worker/README.md's "Deploying to production")
+# to go back to auto-deploy on every relevant push.
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'worker/**'
-      - 'knowledge/**'
-      - 'resume.html'
-      - '.github/workflows/deploy-worker.yml'
   workflow_dispatch: {}
 
 jobs:
