@@ -92,25 +92,43 @@ async function callGemini(env, message) {
     generationConfig: { maxOutputTokens: 400, temperature: 0.4, thinkingConfig: { thinkingBudget: 0 } },
   });
 
-  const attempts = 3;
+  // Each attempt gets its own bound (15s) via AbortController — without this,
+  // a slow-but-eventually-successful Gemini call (observed, not just a fast
+  // 503) could hang per attempt with no cap, and retrying that 3x compounds
+  // into a worse wait than not retrying at all. A fast 503 still gets
+  // retried quickly; a stuck connection gets cut and retried instead of
+  // hanging indefinitely.
+  const attempts = 2;
+  const perAttemptTimeoutMs = 15000;
   let lastError;
   for (let attempt = 1; attempt <= attempts; attempt++) {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
-      body,
-    });
-    if (res.ok) {
-      const data = await res.json();
-      const reply = (data.candidates?.[0]?.content?.parts ?? []).map(p => p.text || '').join('').trim();
-      const tokens = data.usageMetadata?.totalTokenCount ?? null;
-      return { reply, tokens };
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), perAttemptTimeoutMs);
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
+        body,
+        signal: controller.signal,
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const reply = (data.candidates?.[0]?.content?.parts ?? []).map(p => p.text || '').join('').trim();
+        const tokens = data.usageMetadata?.totalTokenCount ?? null;
+        return { reply, tokens };
+      }
+      const detail = await res.text().catch(() => '');
+      console.error(`Gemini API ${res.status} (attempt ${attempt}/${attempts}): ${detail.slice(0, 500)}`);
+      lastError = new Error(`Gemini API ${res.status}: ${detail.slice(0, 300)}`);
+      const retryable = res.status === 429 || res.status === 503;
+      if (!retryable || attempt === attempts) break;
+    } catch (err) {
+      console.error(`Gemini fetch failed (attempt ${attempt}/${attempts}): ${err.message || err}`);
+      lastError = err;
+      if (attempt === attempts) break;
+    } finally {
+      clearTimeout(timer);
     }
-    const detail = await res.text().catch(() => '');
-    console.error(`Gemini API ${res.status} (attempt ${attempt}/${attempts}): ${detail.slice(0, 500)}`);
-    lastError = new Error(`Gemini API ${res.status}: ${detail.slice(0, 300)}`);
-    const retryable = res.status === 429 || res.status === 503;
-    if (!retryable || attempt === attempts) break;
     await sleep(attempt * 500);
   }
   throw lastError;
