@@ -31,7 +31,7 @@ test('window features and probability aggregation are correct',()=>{
 
 test('requested copy, live Queue destination and model annotation',async({page})=>{
   await page.goto('/');
-  await expect(page.locator('#hero-heading')).toContainText('I build');await expect(page.locator('#hero-heading')).toContainText('software for people and for agents.');
+  await expect(page.locator('#hero-heading')).toContainText('I build');await expect(page.locator('#hero-heading')).toContainText('software for people and agents.');
   await expect(page.locator('.chat-label')).toContainText("ASK AI ABOUT PAUL'S PORTFOLIO");
   await expect(page.locator('.intro-detail')).toContainText('lab-based testing');
   await expect(page.locator('.project-featured')).toContainText('predict running, walking, sitting and standing');

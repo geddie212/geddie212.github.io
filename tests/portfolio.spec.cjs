@@ -2,7 +2,7 @@ const {test,expect}=require('@playwright/test');
 test('header, chat assistant, theme and local assets',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.setViewportSize({width:1440,height:1100});await page.goto('/');
-  await expect(page.getByRole('heading',{name:/I build\s*software for people and for agents\./})).toBeVisible();
+  await expect(page.getByRole('heading',{name:/I build\s*software for people and agents\./})).toBeVisible();
   expect(await page.locator('.portrait img').evaluate(img=>img.complete&&img.naturalWidth>0)).toBeTruthy();
   await expect(page.locator('#chat-messages .chat-msg-row')).toHaveCount(1);
   await page.getByRole('button',{name:"What's his tech stack?"}).click();
