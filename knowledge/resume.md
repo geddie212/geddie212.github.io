@@ -1,61 +1,54 @@
 # Paul Gedrimas
 
-Computer Science · Wearable Systems & Research Tooling
+Computer Science · Full-Stack Development & Applied AI
 
 San Francisco, California
 [pauliusgedrimas@gmail.com](mailto:pauliusgedrimas@gmail.com) · [GitHub](https://github.com/geddie212) · [LinkedIn](https://linkedin.com/in/paul-ged)
 
-Computer Science student interested in wearable-based modeling of human emotional states, with a focus on stress, cravings, and relapse risk. Motivated to build research infrastructure supporting just-in-time intervention and recovery from substance use.
+Computer Science student who builds end-to-end, frontend to backend, with recent work integrating LLMs into production features.
 
 ## Skills
 
-**Languages:** Python, Java, C, JavaScript, HTML/CSS
-**Data & systems:** SQL, Python data pipelines, wearable sensor data, real-time streams
-**Concepts:** Data structures and algorithms, systems programming, ML data preparation, model training and evaluation
-**Communication:** English, Lithuanian
+**Languages:** Python, Java, C, JavaScript, SQL, HTML/CSS, Swift
+**Frameworks:** Flask, FastAPI, SwiftUI, Cloudflare Workers, REST APIs
+**Practices:** Git, GitHub Actions (CI/CD), object-oriented design, data structures and algorithms
 
-## Research & technical projects
+## Projects
+
+### [Portfolio AI Assistant](https://geddie212.github.io)
+
+JavaScript, Cloudflare Workers, Gemini API, SQL
+
+- Built a full-stack chat feature end to end: a frontend calling a serverless backend that grounds LLM replies in résumé data, logs to SQL, and deploys via GitHub Actions CI/CD.
 
 ### [BehaviorTrace](https://github.com/geddie212/BehaviorTrace)
 
-Wearable EMA / State-Confirmation Infrastructure
+Python, JavaScript, PWA
 
-- Designed an end-to-end wearable research workflow using EmotiBit biosignal data.
+- Designed a wearable research pipeline (web app/PWA + Python) aligning EmotiBit biosignal streams with participant-confirmed labels for ML training; open source.
 
-- Built a web application and PWA for participants to confirm behavioral or emotional states.
+### [Health Agent](https://github.com/geddie212/health-agent)
 
-- Implemented a pipeline aligning biosignal streams with participant-confirmed labels for ML training and evaluation.
+SwiftUI, FastAPI, Claude API
 
-- Documented deployment and setup as an open-source research toolkit; enabled live biosignal streaming for model testing.
+- Built a chat-first iOS app for logging meals and workouts by text, photo, or voice, with a FastAPI backend and Apple HealthKit sync.
 
-### AI-Assisted Academic Planning System · CS 486
+### AI Course-Planning Agent
 
-Java, JavaScript, HTML/CSS, RAG, LLMs, Data Extraction
+CS 486 · Java, RAG, LLMs
 
-- Built a baseline ChatGPT API agent and an enhanced retrieval-augmented agent using USF course-catalog data.
+- Built and evaluated a retrieval-augmented LLM agent over USF's course catalog against a baseline agent in a 20-participant study; authored a findings paper.
 
-- Conducted a controlled evaluation with 20 participants, examining course outlines and prerequisite chaining.
+### CryoSight · UCSF QBI Hackathon
 
-- Analyzed the collected results and wrote a paper about the study.
+Python, U-Net, Graph Neural Networks, LLM
 
-### Systems & Algorithms Projects
-
-- Implemented a LIFO-based threading system using the producer–consumer model in C.
-
-- Built a server-side Mancala AI and a Fox & Hare simulation with reproduction, starvation, and hunting rules.
-
-- Wrote an n-gram text predictor that adapts the n-gram length to the user’s input.
-
-### Facial Recognition Security Prototype
-
-Independent freelance project
-
-- Built a prototype that detects known identities and triggers access-control logic for a proposed retail sliding-door application.
+- Built a deep-learning platform, with a 4-person team, for particle detection in cryo-electron tomograms: a custom U-Net model, a graph neural network for clustering analysis, a 3D visualization UI, and LLM-generated summary reports.
 
 ## Education
 
 ### University of San Francisco
 
-B.S. in Computer Science · Expected 2028 · GPA 3.91 / 4.00
+B.S. in Computer Science · Expected 2028 · GPA 3.89 / 4.00
 
-Relevant coursework: Introduction to Computer Science, Foundations of Program Design, Object-Oriented Programming and Data Structures, C and Systems Programming, Intermediate Data Structures and Algorithms, Special Topics in Computer Science, Calculus I–II, Discrete Mathematics, Linear Algebra and Probability.
+Relevant coursework: Software Development, Computer Architecture, Object-Oriented Programming & Data Structures, Intermediate Data Structures and Algorithms, C and Systems Programming.
